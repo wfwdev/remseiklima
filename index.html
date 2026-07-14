@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="hu" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remsei Klímatechnika - Klíma és Hőszivattyú</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        remsei: {
+                            blue: '#4c749c',
+                            dark: '#333e48',
+                            silver: '#a1aab2'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Gördítősáv elrejtése a vízszintes lapozóhoz */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-remsei-dark font-sans antialiased">
+
+    <!-- ========================================================= -->
+    <!--                       NAVIGÁCIÓ                           -->
+    <!-- ========================================================= -->
+    
+    <!-- Felső sáv: z-50 réteg és fix fehér háttér, így SOHA nem takarható el -->
+    <nav class="bg-white shadow-md fixed w-full z-50 border-b-4 border-remsei-blue">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center relative">
+            
+            <!-- Logó -->
+            <a href="index.html" class="flex items-center gap-3">
+                <img src="remsei-logo.png" alt="Remsei Klíma Logó" class="h-10 md:h-12 object-contain">
+                <div class="flex flex-col justify-center">
+                    <span class="text-xl md:text-2xl font-black text-remsei-dark leading-none tracking-tight uppercase">Remsei</span>
+                    <span class="text-xs md:text-sm font-semibold text-remsei-blue leading-none tracking-widest uppercase mt-1">Klímatechnika</span>
+                </div>
+            </a>
+
+            <!-- Asztali Menü -->
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="termekek.html" class="text-remsei-dark hover:text-remsei-blue font-bold transition">Készülékek</a>
+                <a href="index.html#szolgaltatasok" class="text-remsei-dark hover:text-remsei-blue font-bold transition">Szolgáltatások</a>
+                <a href="index.html#kapcsolat" class="text-remsei-dark hover:text-remsei-blue font-bold transition">Kapcsolat</a>
+                <a href="tel:+36706118131" class="flex items-center gap-2 bg-remsei-dark text-white px-5 py-2 rounded-md font-bold hover:bg-gray-800 transition shadow-sm ml-4">
+                    📞 +36 70 611 8131
+                </a>
+            </div>
+
+            <!-- Hamburger Gomb (Mobilon) -->
+            <!-- A gomb is a bg-white miatt nem lesz átlátszó -->
+            <button id="hamburgerBtn" class="md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 focus:outline-none cursor-pointer bg-white">
+                <span class="line-1 w-7 h-0.5 bg-remsei-dark transition-all duration-300 origin-center"></span>
+                <span class="line-2 w-7 h-0.5 bg-remsei-dark transition-all duration-300"></span>
+                <span class="line-3 w-7 h-0.5 bg-remsei-dark transition-all duration-300 origin-center"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ========================================================= -->
+    <!--                 MOBILOS MENÜ OVERLAY                      -->
+    <!-- ========================================================= -->
+    <!-- z-40 réteg: A navigáció (z-50) MÖGÖTT van, onnan csúszik ki -->
+    <!-- pt-24: Eltolja a menüpontokat lefelé, hogy ne lógjanak a navbar alá -->
+    <div id="mobileMenu" class="fixed inset-0 bg-white z-40 flex flex-col items-center justify-center space-y-8 transform -translate-y-full opacity-0 pointer-events-none transition-all duration-300 pt-24">
+        <a href="termekek.html" class="mobile-link text-remsei-dark font-black text-3xl hover:text-remsei-blue transition">Készülékek</a>
+        <a href="index.html#szolgaltatasok" class="mobile-link text-remsei-dark font-black text-3xl hover:text-remsei-blue transition">Szolgáltatások</a>
+        <a href="index.html#kapcsolat" class="mobile-link text-remsei-dark font-black text-3xl hover:text-remsei-blue transition">Kapcsolat</a>
+        <a href="tel:+36706118131" class="bg-remsei-blue text-white text-center py-4 px-10 rounded-full font-bold mt-8 shadow-xl text-xl hover:bg-blue-700 transition">
+            📞 Hívás Most
+        </a>
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!--                      HERO SZEKCIÓ                         -->
+    <!-- ========================================================= -->
+    <header class="pt-36 pb-20 px-4 bg-white text-center border-b border-gray-200">
+        <div class="max-w-3xl mx-auto">
+            <h1 class="text-4xl md:text-5xl font-black mb-6 leading-tight text-remsei-dark uppercase tracking-tight">
+                Hűt, Fűt, Spórol <br><span class="text-remsei-blue">Egész Évben</span>
+            </h1>
+            <p class="text-lg text-gray-600 mb-10 max-w-2xl mx-auto">
+                Klíma és hőszivattyú telepítés Veszprémben és környékén. 
+                Hűtő-fűtő split klímák – akár 70%-kal olcsóbb fűtés gáz helyett, megbízható garanciával.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#termekek" class="bg-remsei-silver text-white text-lg px-8 py-4 rounded-lg font-bold hover:bg-gray-400 transition shadow-md">
+                    Készülékek
+                </a>
+                <a href="#kapcsolat" class="bg-remsei-blue text-white text-lg px-8 py-4 rounded-lg font-bold hover:bg-blue-700 transition shadow-md">
+                    Ingyenes Ajánlatkérés
+                </a>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- ========================================================= -->
+    <!--                      TERMÉKEK SZEKCIÓ                     -->
+    <!-- ========================================================= -->
+    <section id="termekek" class="py-20 px-0 md:px-4 max-w-6xl mx-auto overflow-hidden">
+        <div class="text-center mb-10 px-4">
+            <h2 class="text-3xl font-black text-remsei-dark uppercase tracking-wide mb-3">Kiemelt Készülékeink</h2>
+            <div class="w-20 h-1 bg-remsei-blue mx-auto mb-4"></div>
+            <p class="text-gray-500">Energiahatékony megoldások, amiket a leggyakrabban telepítünk.</p>
+        </div>
+        
+        <!-- LAPOZÓ KONTÉNER -->
+        <!-- flex és overflow-x-auto: Vízszintes görgetés -->
+        <!-- snap-x snap-mandatory: Mágnesként a helyére húzza a kártyát -->
+        <div class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-8 px-4 hide-scrollbar">
+            
+            <!-- 1. KÁRTYA -->
+            <!-- w-[85%]: Mobilon 85% széles, így belóg a következő. md:w-[31%]: Asztalin 3 db fér el egymás mellett -->
+            <div class="snap-center shrink-0 w-[85%] md:w-[31%] bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden flex flex-col relative">
+                <div class="bg-remsei-dark text-white text-xs font-bold px-3 py-1 rounded-br-lg absolute top-0 left-0 z-10">Akció</div>
+                <div class="h-36 bg-gray-50 flex items-center justify-center border-b border-gray-100">
+                    <span class="text-remsei-silver text-sm font-medium">[Klíma Fotó]</span>
+                </div>
+                <div class="p-4 flex-1 flex flex-col">
+                    <h3 class="text-lg font-bold mb-1 text-remsei-dark leading-tight">Gree Comfort Pro 3,5 kW</h3>
+                    <p class="text-xs font-semibold text-remsei-blue mb-3 uppercase tracking-wider">Fűtésre optimalizált</p>
+                    <ul class="text-xs text-gray-600 mb-4 space-y-1.5 flex-1">
+                        <li class="flex items-start gap-1.5"><span class="text-remsei-blue font-bold">✓</span> A+++/A++ energiaosztály</li>
+                        <li class="flex items-start gap-1.5"><span class="text-remsei-blue font-bold">✓</span> Beépített Wi-Fi vezérlés</li>
+                        <li class="flex items-start gap-1.5"><span class="text-remsei-blue font-bold">✓</span> Fűtés −25 °C-ig</li>
+                    </ul>
+                    <!-- Ár és gomb egy sorban a helytakarékosságért -->
+                    <div class="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between">
+                        <div class="text-xl font-black text-remsei-dark">274 900 Ft</div>
+                        <a href="#kapcsolat" class="bg-remsei-blue text-white text-sm font-bold px-4 py-2 rounded-md hover:bg-blue-700 transition">Érdekel</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. KÁRTYA -->
+            <div class="snap-center shrink-0 w-[85%] md:w-[31%] bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden flex flex-col relative">
+                <div class="h-36 bg-gray-50 flex items-center justify-center border-b border-gray-100">
+                    <span class="text-remsei-silver text-sm font-medium">[Klíma Fotó]</span>
+                </div>
+                <div class="p-4 flex-1 flex flex-col">
+                    <h3 class="text-lg font-bold mb-1 text-remsei-dark leading-tight">Syen Charm 2,7 kW</h3>
+                    <p class="text-xs font-semibold text-remsei-blue mb-3 uppercase tracking-wider">Fűtésrásegítésre</p>
+                    <ul class="text-xs text-gray-600 mb-4 space-y-1.5 flex-1">
+                        <li class="flex items-start gap-1.5"><span class="text-remsei-blue font-bold">✓</span> A++/A+ energiaosztály</li>
+                        <li class="flex items-start gap-1.5"><span class="text-remsei-blue font-bold">✓</span> Csendes üzemmód</li>
+                        <li class="flex items-start gap-1.5"><span class="text-remsei-blue font-bold">✓</span> Cold Plasma szűrő</li>
+                    </ul>
+                    <div class="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between">
+                        <div class="text-xl font-black text-remsei-dark">199 900 Ft</div>
+                        <a href="#kapcsolat" class="bg-remsei-blue text-white text-sm font-bold px-4 py-2 rounded-md hover:bg-blue-700 transition">Érdekel</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. KÁRTYA -->
+            <div class="snap-center shrink-0 w-[85%] md:w-[31%] bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden flex flex-col relative">
+                <div class="h-36 bg-gray-50 flex items-center justify-center border-b border-gray-100">
+                    <span class="text-remsei-silver text-sm font-medium">[Klíma Fotó]</span>
+                </div>
+                <div class="p-4 flex-1 flex flex-col">
+                    <h3 class="text-lg font-bold mb-1 text-remsei-dark leading-tight">Gree Smart One 3,5 kW</h3>
+                    <p class="text-xs font-semibold text-remsei-blue mb-3 uppercase tracking-wider">Prémium / AI Vezérlés</p>
+                    <ul class="text-xs text-gray-600 mb-4 space-y-1.5 flex-1">
+                        <li class="flex items-start gap-1.5"><span class="text-remsei-blue font-bold">✓</span> UV szűrő és AI vezérlés</li>
+                        <li class="flex items-start gap-1.5"><span class="text-remsei-blue font-bold">✓</span> Páratartalom-szabályzás</li>
+                        <li class="flex items-start gap-1.5"><span class="text-remsei-blue font-bold">✓</span> Extra csendes kialakítás</li>
+                    </ul>
+                    <div class="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between">
+                        <div class="text-xl font-black text-remsei-dark">272 000 Ft</div>
+                        <a href="#kapcsolat" class="bg-remsei-blue text-white text-sm font-bold px-4 py-2 rounded-md hover:bg-blue-700 transition">Érdekel</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Gomb a teljes kínálathoz -->
+        <div class="text-center mt-4">
+            <a href="termekek.html" class="inline-block bg-white text-remsei-dark font-bold px-8 py-3 rounded-md border-2 border-remsei-dark hover:bg-remsei-dark hover:text-white transition shadow-sm">
+                Összes készülék megtekintése &rarr;
+            </a>
+        </div>
+    </section>
+
+
+    <!-- ========================================================= -->
+    <!--                   SZOLGÁLTATÁSOK SZEKCIÓ                  -->
+    <!-- ========================================================= -->
+    <section id="szolgaltatasok" class="py-20 bg-remsei-dark text-white px-4">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
+            <div>
+                <div class="text-5xl mb-4">❄️</div>
+                <h3 class="text-xl font-bold mb-3 uppercase tracking-wide">Szakszerű Telepítés</h3>
+                <p class="text-gray-400">Pormentes munkavégzés, minőségi anyaghasználat és esztétikus kivitelezés minden helyszínen.</p>
+            </div>
+            <div>
+                <div class="text-5xl mb-4">🔧</div>
+                <h3 class="text-xl font-bold mb-3 uppercase tracking-wide">Karbantartás</h3>
+                <p class="text-gray-400">Éves tisztítás és fertőtlenítés, gáznyomás ellenőrzés a hosszú élettartamért és a tiszta levegőért.</p>
+            </div>
+            <div>
+                <div class="text-5xl mb-4">🛡️</div>
+                <h3 class="text-xl font-bold mb-3 uppercase tracking-wide">Teljeskörű Garancia</h3>
+                <p class="text-gray-400">Hivatalos, regisztrált telepítőként a gépekre gyártói garanciát, az elvégzett munkára pedig saját garanciát vállalunk.</p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========================================================= -->
+    <!--                 HELYSZÍNI FELMÉRÉS SZEKCIÓ                -->
+    <!-- ========================================================= -->
+    <section class="py-16 bg-gray-100 px-4">
+        <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-200 p-8 md:p-10">
+            <div class="md:flex items-center gap-8">
+                <div class="md:w-2/3">
+                    <h2 class="text-2xl font-black mb-4 text-remsei-dark">Professzionális helyszíni felmérés</h2>
+                    <p class="text-gray-600 mb-4">Tapasztalt szakértőnk személyesen felméri otthonát, hogy a hőterhelés alapján a tökéletes gépet és a legesztétikusabb telepítési megoldást ajánlhassuk.</p>
+                    <div class="inline-block bg-blue-50 text-remsei-blue font-bold px-4 py-3 rounded-lg border border-blue-100">
+                        Felmérési díj: 10.000 Ft 
+                        <span class="font-normal text-sm block mt-1 text-gray-500">(Megrendelés esetén a végösszegből 100%-ban jóváírjuk)</span>
+                    </div>
+                </div>
+                <div class="md:w-1/3 mt-8 md:mt-0 text-center">
+                    <div class="text-6xl mb-4">📐</div>
+                    <a href="#kapcsolat" class="block w-full bg-remsei-dark text-white py-3 rounded-lg font-bold hover:bg-gray-800 transition">Időpontot Kérek</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========================================================= -->
+    <!--                   KAPCSOLAT ÉS ŰRLAP                      -->
+    <!-- ========================================================= -->
+    <section id="kapcsolat" class="py-20 px-4 max-w-5xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row border border-gray-100">
+            
+            <!-- Kapcsolat Info -->
+            <div class="bg-remsei-blue text-white p-10 md:w-2/5 flex flex-col justify-center">
+                <h2 class="text-3xl font-black mb-6">Kapcsolat</h2>
+                <p class="mb-8 text-blue-100 text-lg">Kérjen árajánlatot vagy hívjon minket bizalommal egyeztetés céljából!</p>
+                <div class="space-y-6 text-lg">
+                    <div class="flex items-center gap-4">
+                        <span class="text-2xl">📞</span>
+                        <a href="tel:+36706118131" class="font-bold hover:underline">+36 70 611 8131</a>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-2xl">✉️</span>
+                        <a href="mailto:info@remseiklima.hu" class="font-bold hover:underline">info@remseiklima.hu</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Űrlap Panel -->
+            <div class="p-10 md:w-3/5 bg-gray-50">
+                <h3 class="text-2xl font-bold text-remsei-dark mb-6">Online Ajánlatkérés</h3>
+                
+                <div id="formMessage" class="hidden mb-6 p-4 rounded-md font-bold text-sm transition-all duration-300"></div>
+
+                <form id="quoteForm" class="space-y-5">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1" for="quoteName">Név *</label>
+                            <input type="text" id="quoteName" class="w-full bg-white border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-remsei-blue transition-colors" placeholder="Az Ön neve">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1" for="quotePhone">Telefonszám *</label>
+                            <input type="tel" id="quotePhone" class="w-full bg-white border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-remsei-blue transition-colors" placeholder="+36 30 123 4567">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1" for="quoteCity">Település</label>
+                        <input type="text" id="quoteCity" class="w-full bg-white border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-remsei-blue transition-colors" placeholder="Hol lenne a kivitelezés?">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1" for="quoteDescription">Igény leírása</label>
+                        <textarea id="quoteDescription" rows="4" class="w-full bg-white border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-remsei-blue transition-colors" placeholder="Pl.: Nappali hűtése, fűtéskiváltás, stb..."></textarea>
+                    </div>
+                    <button type="button" id="submitQuoteBtn" class="w-full bg-remsei-dark text-white text-lg font-bold py-4 rounded-md hover:bg-gray-800 transition shadow-md">
+                        Ajánlatkérés küldése
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========================================================= -->
+    <!--                         LÁBLÉC                            -->
+    <!-- ========================================================= -->
+    <footer class="bg-gray-900 text-gray-400 py-8 text-center px-4 border-t-4 border-remsei-dark">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="font-bold text-white text-xl tracking-wider">REMSEI <span class="font-normal text-remsei-silver">KLÍMATECHNIKA</span></div>
+            <p class="text-sm">&copy; 2026 Minden jog fenntartva.</p>
+        </div>
+    </footer>
+
+    <!-- Script bekötése -->
+    <script src="app.js"></script>
+</body>
+</html>
