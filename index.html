@@ -4,16 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Remsei Klímatechnika - Klíma és Hőszivattyú</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        remsei: {
-                            blue: '#4c749c',
-                            dark: '#333e48',
-                            silver: '#a1aab2'
+                        remsei: { blue: '#4c749c', dark: '#333e48', silver: '#a1aab2' }
+                    },
+                    // ITT DEFINIÁLJUK AZ ÚJ BETŰTÍPUST
+                    fontFamily: {
+                        audiowide: ['Audiowide', 'sans-serif'],
+                    },
+                    animation: {
+                        'infinite-scroll': 'infinite-scroll 25s linear infinite',
+                    },
+                    keyframes: {
+                        'infinite-scroll': {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-50%)' }
                         }
                     }
                 }
@@ -29,6 +41,9 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+        text-outline {
+        -webkit-text-stroke: 10px #000; /* Itt állíthatod a körvonal vastagságát */
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-remsei-dark font-sans antialiased">
@@ -42,10 +57,10 @@
         <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center relative">
             
             <!-- Logó -->
-            <a href="index.html" class="flex items-center gap-3">
+            <a href="index.html" class="flex items-center gap-3 relative z-50">
                 <img src="remsei-logo.png" alt="Remsei Klíma Logó" class="h-10 md:h-12 object-contain">
                 <div class="flex flex-col justify-center">
-                    <span class="text-xl md:text-2xl font-black text-remsei-dark leading-none tracking-tight uppercase">Remsei</span>
+                    <span class="text-xl md:text-2xl font-audiowide text-remsei-dark leading-none tracking-tight uppercase">Remsei</span>
                     <span class="text-xs md:text-sm font-semibold text-remsei-blue leading-none tracking-widest uppercase mt-1">Klímatechnika</span>
                 </div>
             </a>
@@ -82,6 +97,13 @@
         <a href="tel:+36706118131" class="bg-remsei-blue text-white text-center py-4 px-10 rounded-full font-bold mt-8 shadow-xl text-xl hover:bg-blue-700 transition">
             📞 Hívás Most
         </a>
+        <!-- ÚJ: Facebook link a mobil menübe -->
+        <a href="https://www.facebook.com/profile.php?id=61591746097631" target="_blank" class="flex items-center justify-center gap-2 text-remsei-dark font-bold hover:text-[#1877F2] transition mt-6">
+            <svg class="w-6 h-6 text-[#1877F2]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+            </svg>
+            Facebook oldalunk
+        </a>
     </div>
 
 
@@ -90,8 +112,8 @@
     <!-- ========================================================= -->
     <header class="pt-36 pb-20 px-4 bg-white text-center border-b border-gray-200">
         <div class="max-w-3xl mx-auto">
-            <h1 class="text-4xl md:text-5xl font-black mb-6 leading-tight text-remsei-dark uppercase tracking-tight">
-                Hűt, Fűt, Spórol <br><span class="text-remsei-blue">Egész Évben</span>
+            <h1 class="text-4xl md:text-6xl font-audiowide font-weight-bold text-black mb-6 leading-tight uppercase text-outline">
+                Hűt, Fűt, Spórol <span class="text-remsei-blue">Egész Évben</span>
             </h1>
             <p class="text-lg text-gray-600 mb-10 max-w-2xl mx-auto">
                 Klíma és hőszivattyú telepítés Veszprémben és környékén. 
@@ -246,6 +268,35 @@
 
 
     <!-- ========================================================= -->
+    <!--                      MÁRKÁK (MARQUEE)                     -->
+    <!-- ========================================================= -->
+    <section class="py-10 bg-gray-100 border-y border-gray-100 overflow-hidden">
+        
+        <!-- A maszkoló doboz -->
+        <div class="relative w-full flex overflow-hidden group">
+            
+            <!-- Az animált, dupla széles doboz (gap-16 adja a tökéletes egyenlő távolságot) -->
+            <div class="flex whitespace-nowrap animate-infinite-scroll group-hover:[animation-play-state:paused] items-center gap-16 px-8">
+                
+                <!-- === 1. SZETT (Eredeti) === -->
+                <!-- A grayscale osztály miatt szürkék lesznek, hoverre kiszínesednek -->
+                <img src="Panasonic.svg.webp" alt="Panasonic" class="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-pointer">
+                <img src="Midea.svg.webp" alt="Midea" class="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-pointer">
+                <img src="Gree.svg.webp" alt="Gree" class="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-pointer">
+                <img src="DAIKIN.svg.webp" alt="Daikin" class="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-pointer">
+
+                <!-- === 2. SZETT (A végtelenített hatáshoz pontosan ugyanaz még egyszer) === -->
+                <img src="Panasonic.svg.webp" alt="Panasonic" class="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-pointer">
+                <img src="Midea.svg.webp" alt="Midea" class="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-pointer">
+                <img src="Gree.svg.webp" alt="Gree" class="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-pointer">
+                <img src="DAIKIN.svg.webp" alt="Daikin" class="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-pointer">
+                
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========================================================= -->
     <!--                   KAPCSOLAT ÉS ŰRLAP                      -->
     <!-- ========================================================= -->
     <section id="kapcsolat" class="py-20 px-4 max-w-5xl mx-auto">
@@ -264,6 +315,19 @@
                         <span class="text-2xl">✉️</span>
                         <a href="mailto:info@remseiklima.hu" class="font-bold hover:underline">info@remseiklima.hu</a>
                     </div>
+                </div>
+                <div class="mt-8 pt-8 border-t border-gray-600/30">
+                    <a href="https://www.facebook.com/profile.php?id=61591746097631" target="_blank" class="flex items-center gap-4 group hover:opacity-90 transition">
+                        <div class="bg-white/10 p-3 rounded-full flex-shrink-0 group-hover:bg-[#1877F2] transition">
+                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-300">Nézze meg referenciáinkat</p>
+                            <p class="text-lg font-bold text-white group-hover:text-blue-200 transition">Kövessen Facebookon!</p>
+                        </div>
+                    </a>
                 </div>
             </div>
             
@@ -304,10 +368,79 @@
     <!-- ========================================================= -->
     <!--                         LÁBLÉC                            -->
     <!-- ========================================================= -->
-    <footer class="bg-gray-900 text-gray-400 py-8 text-center px-4 border-t-4 border-remsei-dark">
-        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="font-bold text-white text-xl tracking-wider">REMSEI <span class="font-normal text-remsei-silver">KLÍMATECHNIKA</span></div>
-            <p class="text-sm">&copy; 2026 Minden jog fenntartva.</p>
+    <footer class="bg-gray-900 text-gray-400 pt-16 pb-8 px-4 border-t-4 border-remsei-blue">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 mb-12">
+            
+            <!-- 1. Oszlop: Rólunk & Céginfo -->
+            <div class="flex flex-col items-center md:items-start text-center md:text-left">
+                <a href="index.html" class="inline-block mb-4">
+                    <img src="remsei-logo.png" alt="Remsei Klíma Logó" class="h-10 object-contain grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all">
+                </a>
+                <p class="text-sm leading-relaxed mb-4">
+                    Megbízható klíma és hőszivattyú telepítés, karbantartás és szervizelés precíz munkavégzéssel, hivatalos garanciával.
+                </p>
+                <div class="text-xs text-gray-500 space-y-1">
+                    <p>Üzemeltető: Remsei Klímatechnika Kft.</p>
+                    <p>Adószám: 12345678-2-19</p>
+                    <p>F-Gáz azonosító: 1000000000000</p>
+                </div>
+            </div>
+
+            <!-- 2. Oszlop: Gyorslinkek -->
+            <div class="flex flex-col items-center md:items-start">
+                <h4 class="text-white text-lg font-bold uppercase tracking-wider mb-5">Navigáció</h4>
+                <ul class="space-y-3 text-sm">
+                    <li><a href="index.html" class="hover:text-remsei-blue transition flex items-center gap-2"><span>&rarr;</span> Kezdőlap</a></li>
+                    <li><a href="termekek.html" class="hover:text-remsei-blue transition flex items-center gap-2"><span>&rarr;</span> Készülékek</a></li>
+                    <li><a href="index.html#szolgaltatasok" class="hover:text-remsei-blue transition flex items-center gap-2"><span>&rarr;</span> Szolgáltatások</a></li>
+                    <li><a href="index.html#kapcsolat" class="hover:text-remsei-blue transition flex items-center gap-2"><span>&rarr;</span> Ajánlatkérés</a></li>
+                </ul>
+            </div>
+
+            <!-- 3. Oszlop: Kapcsolat -->
+            <div class="flex flex-col items-center md:items-start text-center md:text-left">
+                <h4 class="text-white text-lg font-bold uppercase tracking-wider mb-5">Kapcsolat</h4>
+                <ul class="space-y-4 text-sm w-full">
+                    <li>
+                        <a href="tel:+36706118131" class="flex items-center justify-center md:justify-start gap-3 hover:text-white transition group">
+                            <span class="bg-gray-800 p-2 rounded-full group-hover:bg-remsei-blue transition">📞</span>
+                            <span class="font-bold text-lg">+36 70 611 8131</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mailto:info@remseiklima.hu" class="flex items-center justify-center md:justify-start gap-3 hover:text-white transition group">
+                            <span class="bg-gray-800 p-2 rounded-full group-hover:bg-remsei-blue transition">✉️</span>
+                            <span>info@remseiklima.hu</span>
+                        </a>
+                    </li>
+                    <li class="flex items-center justify-center md:justify-start gap-3">
+                        <span class="bg-gray-800 p-2 rounded-full">📍</span>
+                        <span>8200 Veszprém és 50 km-es körzete</span>
+                    </li>
+                    <li class="pt-2">
+                        <a href="https://www.facebook.com/profile.php?id=61591746097631" target="_blank" class="flex items-center justify-center md:justify-start gap-3 hover:text-white transition group">
+                            <span class="bg-gray-800 p-2 rounded-full group-hover:bg-[#1877F2] transition text-gray-400 group-hover:text-white">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                            <span>Kövess minket Facebookon</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+        </div>
+
+        <!-- Alsó sáv: Copyright, Jogi linkek és Készítő -->
+        <div class="max-w-6xl mx-auto border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+            <p>&copy; 2026 Remsei Klímatechnika. Minden jog fenntartva.</p>
+            <div class="flex space-x-6">
+                <!-- Ide bekötöttük az új oldalt -->
+                <a href="adatkezeles.html" class="hover:text-gray-300 transition">Adatkezelési tájékoztató</a>
+            </div>
+            <!-- ITT VAN A TE REKLÁMOD -->
+            <p>Weboldal készítés: <a href="https://wfw.hu" target="_blank" class="text-gray-400 font-bold hover:text-white transition">Kovács Gábor | WFW.hu</a></p>
         </div>
     </footer>
 

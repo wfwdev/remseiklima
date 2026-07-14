@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Készülékek - Remsei Klímatechnika</title>
+    <title>Adatkezelési Tájékoztató - Remsei Klímatechnika</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
@@ -48,7 +48,7 @@
                 </div>
             </a>
             <div class="hidden md:flex items-center space-x-6 relative z-50">
-                <a href="termekek.html" class="text-remsei-blue font-bold transition border-b-2 border-remsei-blue">Készülékek</a>
+                <a href="termekek.html" class="text-remsei-dark hover:text-remsei-blue font-bold transition">Készülékek</a>
                 <a href="index.html#szolgaltatasok" class="text-remsei-dark hover:text-remsei-blue font-bold transition">Szolgáltatások</a>
                 <a href="index.html#kapcsolat" class="text-remsei-dark hover:text-remsei-blue font-bold transition">Kapcsolat</a>
                 <a href="tel:+36706118131" class="flex items-center gap-2 bg-remsei-dark text-white px-5 py-2 rounded-md font-bold hover:bg-gray-800 transition shadow-sm ml-4">
@@ -65,125 +65,109 @@
 
     <!-- MOBILOS MENÜ OVERLAY -->
     <div id="mobileMenu" class="fixed inset-0 bg-white z-40 flex flex-col items-center justify-center space-y-8 transform -translate-y-full opacity-0 pointer-events-none transition-all duration-300 pt-24">
-        <a href="termekek.html" class="mobile-link text-remsei-blue font-black text-3xl transition">Készülékek</a>
+        <a href="termekek.html" class="mobile-link text-remsei-dark font-black text-3xl hover:text-remsei-blue transition">Készülékek</a>
         <a href="index.html#szolgaltatasok" class="mobile-link text-remsei-dark font-black text-3xl hover:text-remsei-blue transition">Szolgáltatások</a>
         <a href="index.html#kapcsolat" class="mobile-link text-remsei-dark font-black text-3xl hover:text-remsei-blue transition">Kapcsolat</a>
-        <a href="tel:+36706118131" class="bg-remsei-blue text-white text-center py-4 px-10 rounded-full font-bold mt-8 shadow-xl text-xl hover:bg-blue-700 transition">
-            📞 Hívás Most
+        <a href="https://www.facebook.com/profile.php?id=61591746097631" target="_blank" class="flex items-center justify-center gap-2 text-remsei-dark font-bold hover:text-[#1877F2] transition mt-6">
+            <svg class="w-6 h-6 text-[#1877F2]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+            </svg>
+            Facebook oldalunk
         </a>
     </div>
 
     <!-- ========================================================= -->
-    <!--                     FEJLÉC ÉS SZŰRŐ                       -->
+    <!--                   JOGI SZÖVEG SZEKCIÓ                     -->
     <!-- ========================================================= -->
-    <main class="min-h-screen pb-20">
-        <div class="bg-remsei-dark text-white py-12 px-4 text-center">
-            <h1 class="text-3xl md:text-4xl font-black uppercase tracking-wide">Klímaberendezések</h1>
-            <p class="text-gray-400 mt-2 max-w-2xl mx-auto">Kínálatunkban megtalálja a legmegbízhatóbb márkákat. Válassza ki az Ön igényeinek leginkább megfelelő kategóriát!</p>
-        </div>
-
-        <section class="py-10 px-4 max-w-6xl mx-auto">
+    <main class="min-h-screen py-16 px-4">
+        <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-sm border border-gray-100 p-8 md:p-12">
             
-            <!-- SZŰRŐ GOMBOK -->
-            <div class="flex flex-wrap justify-center gap-3 mb-12">
-                <!-- Az 'all' gomb alapból aktív stílust kap (sötét háttér, fehér szöveg) -->
-                <button class="filter-btn bg-remsei-dark text-white px-5 py-2 rounded-full font-bold shadow-sm transition" data-filter="all">Összes</button>
-                <button class="filter-btn bg-white text-remsei-dark border border-gray-200 px-5 py-2 rounded-full font-bold shadow-sm hover:bg-gray-100 transition" data-filter="futes">Fűtésre optimalizált</button>
-                <button class="filter-btn bg-white text-remsei-dark border border-gray-200 px-5 py-2 rounded-full font-bold shadow-sm hover:bg-gray-100 transition" data-filter="hutes">Csak hűtés</button>
-                <button class="filter-btn bg-white text-remsei-dark border border-gray-200 px-5 py-2 rounded-full font-bold shadow-sm hover:bg-gray-100 transition" data-filter="premium">Prémium</button>
-            </div>
-
-            <!-- TERMÉK RÁCS -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="productGrid">
+            <h1 class="text-3xl font-black text-remsei-dark mb-8 border-b-2 border-remsei-blue pb-4">Adatkezelési Tájékoztató</h1>
+            
+            <div class="space-y-8 text-gray-700 leading-relaxed text-sm md:text-base">
                 
-                <!-- 1. Kártya (Fűtésre optimalizált) -->
-                <div class="product-card flex flex-col bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden relative transition-all duration-300" data-category="futes">
-                    <div class="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-br-lg absolute top-0 left-0 z-10">Népszerű</div>
-                    <div class="h-36 bg-gray-50 flex items-center justify-center border-b border-gray-100">
-                        <span class="text-remsei-silver text-sm font-medium">[Klíma Fotó]</span>
-                    </div>
-                    <div class="p-4 flex-1 flex flex-col">
-                        <h3 class="text-lg font-bold mb-1 text-remsei-dark leading-tight">Gree Comfort Pro 3,5 kW</h3>
-                        <p class="text-xs font-semibold text-remsei-blue mb-3 uppercase tracking-wider">Fűtésre optimalizált</p>
-                        <ul class="text-xs text-gray-600 mb-4 space-y-1.5 flex-1">
-                            <li class="flex items-start gap-1.5"><span class="text-remsei-blue font-bold">✓</span> A+++/A++ energiaosztály</li>
-                            <li class="flex items-start gap-1.5"><span class="text-remsei-blue font-bold">✓</span> Beépített Wi-Fi vezérlés</li>
-                            <li class="flex items-start gap-1.5"><span class="text-remsei-blue font-bold">✓</span> Fűtés −25 °C-ig</li>
-                        </ul>
-                        <div class="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between">
-                            <div class="text-xl font-black text-remsei-dark">274 900 Ft</div>
-                            <a href="index.html#kapcsolat" class="bg-remsei-blue text-white text-sm font-bold px-4 py-2 rounded-md hover:bg-blue-700 transition">Érdekel</a>
-                        </div>
-                    </div>
-                </div>
+                <section>
+                    <h2 class="text-xl font-bold text-remsei-dark mb-3">1. Bevezetés</h2>
+                    <p>A <strong>Remsei Klímatechnika Kft.</strong> (a továbbiakban: Adatkezelő) elkötelezett ügyfelei és partnerei személyes adatainak védelme iránt. Jelen tájékoztató célja, hogy a <em>remseiklima.hu</em> weboldal látogatói megismerhessék a weboldalon (különösen az ajánlatkérő űrlapon) megadott személyes adataik kezelésének módját, célját és jogalapját az Európai Parlament és a Tanács (EU) 2016/679 rendelete (GDPR) előírásainak megfelelően.</p>
+                </section>
 
-                <!-- 2. Kártya (Csak hűtés) -->
-                <div class="product-card flex flex-col bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden relative transition-all duration-300" data-category="hutes">
-                    <div class="h-36 bg-gray-50 flex items-center justify-center border-b border-gray-100">
-                        <span class="text-remsei-silver text-sm font-medium">[Klíma Fotó]</span>
-                    </div>
-                    <div class="p-4 flex-1 flex flex-col">
-                        <h3 class="text-lg font-bold mb-1 text-remsei-dark leading-tight">Syen Charm 2,7 kW</h3>
-                        <p class="text-xs font-semibold text-remsei-blue mb-3 uppercase tracking-wider">Hűtés / Rásegítés</p>
-                        <ul class="text-xs text-gray-600 mb-4 space-y-1.5 flex-1">
-                            <li class="flex items-start gap-1.5"><span class="text-remsei-blue font-bold">✓</span> A++/A+ energiaosztály</li>
-                            <li class="flex items-start gap-1.5"><span class="text-remsei-blue font-bold">✓</span> Csendes üzemmód</li>
-                            <li class="flex items-start gap-1.5"><span class="text-remsei-blue font-bold">✓</span> Cold Plasma szűrő</li>
-                        </ul>
-                        <div class="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between">
-                            <div class="text-xl font-black text-remsei-dark">199 900 Ft</div>
-                            <a href="index.html#kapcsolat" class="bg-remsei-blue text-white text-sm font-bold px-4 py-2 rounded-md hover:bg-blue-700 transition">Érdekel</a>
-                        </div>
-                    </div>
-                </div>
+                <section>
+                    <h2 class="text-xl font-bold text-remsei-dark mb-3">2. Az Adatkezelő adatai</h2>
+                    <ul class="list-disc list-inside space-y-2 ml-2">
+                        <li><strong>Cégnév:</strong> Remsei Klímatechnika Kft.</li>
+                        <li><strong>Székhely:</strong> [Irányítószám, Város, Utca, Házszám]</li>
+                        <li><strong>Adószám:</strong> [12345678-2-19]</li>
+                        <li><strong>Képviseli:</strong> [Ügyvezető Neve]</li>
+                        <li><strong>E-mail cím:</strong> info@remseiklima.hu</li>
+                        <li><strong>Telefonszám:</strong> +36 70 611 8131</li>
+                    </ul>
+                </section>
 
-                <!-- 3. Kártya (Prémium) -->
-                <div class="product-card flex flex-col bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden relative transition-all duration-300" data-category="premium">
-                    <div class="bg-remsei-dark text-white text-xs font-bold px-3 py-1 rounded-br-lg absolute top-0 left-0 z-10">AI Vezérlés</div>
-                    <div class="h-36 bg-gray-50 flex items-center justify-center border-b border-gray-100">
-                        <span class="text-remsei-silver text-sm font-medium">[Klíma Fotó]</span>
-                    </div>
-                    <div class="p-4 flex-1 flex flex-col">
-                        <h3 class="text-lg font-bold mb-1 text-remsei-dark leading-tight">Gree Smart One 3,5 kW</h3>
-                        <p class="text-xs font-semibold text-remsei-blue mb-3 uppercase tracking-wider">Prémium</p>
-                        <ul class="text-xs text-gray-600 mb-4 space-y-1.5 flex-1">
-                            <li class="flex items-start gap-1.5"><span class="text-remsei-blue font-bold">✓</span> UV szűrő és mesterséges intelligencia</li>
-                            <li class="flex items-start gap-1.5"><span class="text-remsei-blue font-bold">✓</span> Páratartalom-szabályzás</li>
-                            <li class="flex items-start gap-1.5"><span class="text-remsei-blue font-bold">✓</span> Extra csendes kialakítás</li>
-                        </ul>
-                        <div class="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between">
-                            <div class="text-xl font-black text-remsei-dark">272 000 Ft</div>
-                            <a href="index.html#kapcsolat" class="bg-remsei-blue text-white text-sm font-bold px-4 py-2 rounded-md hover:bg-blue-700 transition">Érdekel</a>
-                        </div>
-                    </div>
-                </div>
+                <section>
+                    <h2 class="text-xl font-bold text-remsei-dark mb-3">3. A kezelt adatok köre és az adatkezelés célja</h2>
+                    <p class="mb-3">Amikor Ön a weboldalon található ajánlatkérő űrlapot használja, az alábbi személyes adatait kérjük be és kezeljük:</p>
+                    <ul class="list-disc list-inside space-y-2 ml-2">
+                        <li><strong>Név:</strong> Szükséges a kapcsolatfelvételhez és a személyre szóló árajánlat elkészítéséhez.</li>
+                        <li><strong>Telefonszám:</strong> Szükséges a helyszíni felmérés egyeztetéséhez és a gyors kommunikációhoz.</li>
+                        <li><strong>Település (opcionális):</strong> Szükséges a kiszállási díj és a kapacitás felméréséhez.</li>
+                        <li><strong>Igény leírása (opcionális):</strong> Szükséges a megfelelő készülék kiválasztásához.</li>
+                    </ul>
+                    <p class="mt-3"><strong>Az adatkezelés jogalapja:</strong> Az adatkezelés az Ön önkéntes, kifejezett hozzájárulásán alapul (GDPR 6. cikk (1) bekezdés a) pontja), illetve a szerződéskötést megelőző lépések megtételéhez szükséges (GDPR 6. cikk (1) bekezdés b) pontja).</p>
+                </section>
+
+                <section>
+                    <h2 class="text-xl font-bold text-remsei-dark mb-3">4. Az adatok megőrzésének ideje</h2>
+                    <p>Az ajánlatkérés során megadott adatokat az ajánlat érvényességi idejéig, illetve a szerződés létrejöttéig őrizzük meg. Amennyiben nem kerül sor szerződéskötésre (megrendelésre), adatait az ajánlatkéréstől számított 1 éven belül töröljük. Sikeres megrendelés esetén a számviteli törvény szerinti bizonylatokat (és az azokon szereplő adatokat) 8 évig megőrizzük.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-xl font-bold text-remsei-dark mb-3">5. Adattovábbítás és adatfeldolgozók</h2>
+                    <p class="mb-3">Az Adatkezelő a személyes adatokat harmadik fél számára nem értékesíti, és nem adja át, kivéve az alábbi, a weboldal működéséhez és a levelezéshez elengedhetetlenül szükséges adatfeldolgozókat:</p>
+                    <ul class="list-disc list-inside space-y-2 ml-2">
+                        <li><strong>Tárhelyszolgáltató:</strong> [Tárhelyszolgáltató Cégneve és címe]</li>
+                        <li><strong>Űrlap motor (Web3Forms):</strong> A kapcsolatfelvételi űrlap működését a Web3Forms biztosítja, amely az adatokat azonnal továbbítja az Adatkezelő e-mail címére, adatbázisban nem tárolja azokat profilalkotás céljából.</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-xl font-bold text-remsei-dark mb-3">6. Az érintettek jogai</h2>
+                    <p class="mb-3">Ön jogosult arra, hogy az Adatkezelőtől:</p>
+                    <ul class="list-disc list-inside space-y-2 ml-2">
+                        <li>tájékoztatást kérjen személyes adatai kezeléséről (hozzáférési jog),</li>
+                        <li>kérje személyes adatainak helyesbítését,</li>
+                        <li>kérje személyes adatainak törlését (ha nincs más törvényi kötelezettség a tárolásra),</li>
+                        <li>visszavonja korábban megadott hozzájárulását.</li>
+                    </ul>
+                    <p class="mt-3">Kérelmét az info@remseiklima.hu e-mail címen nyújthatja be, amelyre legfeljebb 30 napon belül válaszolunk.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-xl font-bold text-remsei-dark mb-3">7. Jogorvoslati lehetőségek</h2>
+                    <p>Amennyiben úgy ítéli meg, hogy az Adatkezelő megsértette a személyes adatok védelmére vonatkozó jogszabályokat, panaszt tehet a <strong>Nemzeti Adatvédelmi és Információszabadság Hatóságnál (NAIH)</strong> (1055 Budapest, Falk Miksa utca 9-11., www.naih.hu), vagy bírósághoz fordulhat.</p>
+                </section>
+
+                <p class="text-gray-400 text-sm mt-8 border-t border-gray-100 pt-4">Utolsó frissítés dátuma: 2026. július</p>
 
             </div>
-        </section>
+        </div>
     </main>
 
-   <!-- ========================================================= -->
+    <!-- ========================================================= -->
     <!--                         LÁBLÉC                            -->
     <!-- ========================================================= -->
     <footer class="bg-gray-900 text-gray-400 pt-16 pb-8 px-4 border-t-4 border-remsei-blue">
         <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 mb-12">
-            
-            <!-- 1. Oszlop: Rólunk & Céginfo -->
             <div class="flex flex-col items-center md:items-start text-center md:text-left">
                 <a href="index.html" class="inline-block mb-4">
                     <img src="remsei-logo.png" alt="Remsei Klíma Logó" class="h-10 object-contain grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all">
                 </a>
-                <p class="text-sm leading-relaxed mb-4">
-                    Megbízható klíma és hőszivattyú telepítés, karbantartás és szervizelés precíz munkavégzéssel, hivatalos garanciával.
-                </p>
+                <p class="text-sm leading-relaxed mb-4">Megbízható klíma és hőszivattyú telepítés, karbantartás és szervizelés precíz munkavégzéssel, hivatalos garanciával.</p>
                 <div class="text-xs text-gray-500 space-y-1">
                     <p>Üzemeltető: Remsei Klímatechnika Kft.</p>
                     <p>Adószám: 12345678-2-19</p>
                     <p>F-Gáz azonosító: 1000000000000</p>
                 </div>
             </div>
-
-            <!-- 2. Oszlop: Gyorslinkek -->
             <div class="flex flex-col items-center md:items-start">
                 <h4 class="text-white text-lg font-bold uppercase tracking-wider mb-5">Navigáció</h4>
                 <ul class="space-y-3 text-sm">
@@ -193,8 +177,6 @@
                     <li><a href="index.html#kapcsolat" class="hover:text-remsei-blue transition flex items-center gap-2"><span>&rarr;</span> Ajánlatkérés</a></li>
                 </ul>
             </div>
-
-            <!-- 3. Oszlop: Kapcsolat -->
             <div class="flex flex-col items-center md:items-start text-center md:text-left">
                 <h4 class="text-white text-lg font-bold uppercase tracking-wider mb-5">Kapcsolat</h4>
                 <ul class="space-y-4 text-sm w-full">
@@ -226,18 +208,14 @@
                     </li>
                 </ul>
             </div>
-            
         </div>
 
-        <!-- Alsó sáv: Copyright, Jogi linkek és Készítő -->
         <div class="max-w-6xl mx-auto border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
             <p>&copy; 2026 Remsei Klímatechnika. Minden jog fenntartva.</p>
             <div class="flex space-x-6">
-                <!-- Ide bekötöttük az új oldalt -->
-                <a href="adatkezeles.html" class="hover:text-gray-300 transition">Adatkezelési tájékoztató</a>
+                <a href="adatkezeles.html" class="text-gray-300 transition">Adatkezelési tájékoztató</a>
             </div>
-            <!-- ITT VAN A TE REKLÁMOD -->
-            <p>Weboldal készítés: <a href="https://wfw.hu" target="_blank" class="text-gray-400 font-bold hover:text-white transition">Kovács Gábor | WFW.hu</a></p>
+            <p>Weboldal készítés: <a href="https://wfw.hu" target="_blank" class="text-gray-400 font-bold hover:text-white transition">Tedd be a Neved ide</a></p>
         </div>
     </footer>
 
