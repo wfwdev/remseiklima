@@ -62,6 +62,7 @@
                 <div class="flex flex-col justify-center">
                     <span class="text-xl md:text-2xl font-audiowide text-remsei-dark leading-none tracking-tight uppercase">Remsei</span>
                     <span class="text-xs md:text-sm font-semibold text-remsei-blue leading-none tracking-widest uppercase mt-1">Klímatechnika</span>
+                    <span class="text-xs md:text-sm text-remsei-dark leading-none tracking-widest mt-0">Klíma, Hőszivattyú, Karbantartás</span>
                 </div>
             </a>
 
@@ -90,7 +91,7 @@
     <!-- ========================================================= -->
     <!-- z-40 réteg: A navigáció (z-50) MÖGÖTT van, onnan csúszik ki -->
     <!-- pt-24: Eltolja a menüpontokat lefelé, hogy ne lógjanak a navbar alá -->
-    <div id="mobileMenu" class="fixed inset-0 bg-white z-40 flex flex-col items-center justify-center space-y-8 transform -translate-y-full opacity-0 pointer-events-none transition-all duration-300 pt-24">
+    <div id="mobileMenu" class="fixed inset-0 bg-white z-40 flex flex-col items-center justify-center space-y-8 transform -translate-y-full opacity-0 pointer-events-none transition-all duration-300">
         <a href="termekek.html" class="mobile-link text-remsei-dark font-black text-3xl hover:text-remsei-blue transition">Készülékek</a>
         <a href="index.html#szolgaltatasok" class="mobile-link text-remsei-dark font-black text-3xl hover:text-remsei-blue transition">Szolgáltatások</a>
         <a href="index.html#kapcsolat" class="mobile-link text-remsei-dark font-black text-3xl hover:text-remsei-blue transition">Kapcsolat</a>
@@ -98,7 +99,7 @@
             📞 Hívás Most
         </a>
         <!-- ÚJ: Facebook link a mobil menübe -->
-        <a href="https://www.facebook.com/profile.php?id=61591746097631" target="_blank" class="flex items-center justify-center gap-2 text-remsei-dark font-bold hover:text-[#1877F2] transition mt-6">
+        <a href="https://www.facebook.com/profile.php?id=61591746097631" target="_blank" class="flex items-center justify-center gap-2 text-remsei-dark font-bold hover:text-[#1877F2] transition mt-4">
             <svg class="w-6 h-6 text-[#1877F2]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
             </svg>
@@ -213,7 +214,7 @@
 
         <!-- Gomb a teljes kínálathoz -->
         <div class="text-center mt-4">
-            <a href="termekek.html" class="inline-block bg-white text-remsei-dark font-bold px-8 py-3 rounded-md border-2 border-remsei-dark hover:bg-remsei-dark hover:text-white transition shadow-sm">
+            <a href="termekek.html" class="inline-block bg-white text-remsei-dark font-bold px-8 py-3 rounded-md border-2 border-remsei-dark hover:bg-remsei-dark hover:text-white transition shadow-md">
                 Összes készülék megtekintése &rarr;
             </a>
         </div>
@@ -252,7 +253,7 @@
             <div class="md:flex items-center gap-8">
                 <div class="md:w-2/3">
                     <h2 class="text-2xl font-black mb-4 text-remsei-dark">Professzionális helyszíni felmérés</h2>
-                    <p class="text-gray-600 mb-4">Tapasztalt szakértőnk személyesen felméri otthonát, hogy a hőterhelés alapján a tökéletes gépet és a legesztétikusabb telepítési megoldást ajánlhassuk.</p>
+                    <p class="text-gray-600 mb-4">Tapasztalt szakértőnk személyesen felméri otthonát, hogy a hőterhelés alapján a tökéletes gépet és a legesztétikusabb telepítési módot javasoljuk.</p>
                     <div class="inline-block bg-blue-50 text-remsei-blue font-bold px-4 py-3 rounded-lg border border-blue-100">
                         Felmérési díj: 10.000 Ft 
                         <span class="font-normal text-sm block mt-1 text-gray-500">(Megrendelés esetén a végösszegből 100%-ban jóváírjuk)</span>
@@ -341,20 +342,20 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-1" for="quoteName">Név *</label>
-                            <input type="text" id="quoteName" class="w-full bg-white border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-remsei-blue transition-colors" placeholder="Az Ön neve">
+                            <input type="text" id="quoteName" class="w-full bg-white border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-remsei-blue transition-colors" placeholder="Teljes név">
                         </div>
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-1" for="quotePhone">Telefonszám *</label>
-                            <input type="tel" id="quotePhone" class="w-full bg-white border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-remsei-blue transition-colors" placeholder="+36 30 123 4567">
+                            <input type="tel" id="quotePhone" class="w-full bg-white border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-remsei-blue transition-colors" placeholder="+36 70 123 4567">
                         </div>
                     </div>
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1" for="quoteCity">Település</label>
-                        <input type="text" id="quoteCity" class="w-full bg-white border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-remsei-blue transition-colors" placeholder="Hol lenne a kivitelezés?">
+                        <input type="text" id="quoteCity" class="w-full bg-white border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-remsei-blue transition-colors" placeholder="Város">
                     </div>
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1" for="quoteDescription">Igény leírása</label>
-                        <textarea id="quoteDescription" rows="4" class="w-full bg-white border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-remsei-blue transition-colors" placeholder="Pl.: Nappali hűtése, fűtéskiváltás, stb..."></textarea>
+                        <textarea id="quoteDescription" rows="4" class="w-full bg-white border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-remsei-blue transition-colors" placeholder="Röviden írja le, mit szeretne..."></textarea>
                     </div>
                     <button type="button" id="submitQuoteBtn" class="w-full bg-remsei-dark text-white text-lg font-bold py-4 rounded-md hover:bg-gray-800 transition shadow-md">
                         Ajánlatkérés küldése
