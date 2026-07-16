@@ -6,7 +6,7 @@
     <title>Remsei Klímatechnika - Klíma és Hőszivattyú</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -18,6 +18,7 @@
                     // ITT DEFINIÁLJUK AZ ÚJ BETŰTÍPUST
                     fontFamily: {
                         audiowide: ['Audiowide', 'sans-serif'],
+                        montserrat: ['Montserrat', 'sans-serif'],
                     },
                     animation: {
                         'infinite-scroll': 'infinite-scroll 25s linear infinite',
@@ -44,6 +45,41 @@
         text-outline {
         -webkit-text-stroke: 10px #000; /* Itt állíthatod a körvonal vastagságát */
         }
+
+        /* ========================================================= */
+        /*   HERO: pontosan egy képernyőnyi magasság (mobil + desktop) */
+        /*   A dvh a mobil böngészősáv miatt fontos, a vh a fallback.  */
+        /* ========================================================= */
+        .h-hero {
+            height: 100vh;   /* fallback régebbi böngészőkre */
+            height: 100dvh;  /* modern böngészők: mindig a látható képernyő */
+        }
+
+        /* HERO belépő animációk (JS nélkül, betöltéskor futnak) */
+        /* A szöveg jobbról csúszik be */
+        .hero-text {
+            opacity: 0;
+            animation: heroInRight 0.9s ease-out 0.25s forwards;
+        }
+        /* A háttérkép is jobbról csúszik be (kicsit korábban indul) */
+        .hero-img {
+            opacity: 0;
+            animation: heroInRightBg 1.1s ease-out 0.05s forwards;
+        }
+        @keyframes heroInRight {
+            /* Nagyobb érték = markánsabb "jobbról beúszás" */
+            from { opacity: 0; transform: translateX(80px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes heroInRightBg {
+            /* A scale(1.08) overscan miatt a csúszás közben sem lesz üres sáv a bal szélen */
+            from { opacity: 0; transform: translateX(70px) scale(1.08); }
+            to   { opacity: 1; transform: translateX(0)    scale(1.08); }
+        }
+        /* Akadálymentesség: aki kikapcsolta az animációkat, annak nem mozog */
+        @media (prefers-reduced-motion: reduce) {
+            .hero-text, .hero-img { animation: none; opacity: 1; }
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-remsei-dark font-sans antialiased">
@@ -59,16 +95,28 @@
             <!-- Logó -->
             <a href="index.html" class="flex items-center gap-3 relative z-50">
                 <img src="remsei-logo.png" alt="Remsei Klíma Logó" class="h-10 md:h-12 object-contain">
-                <div class="flex flex-col justify-center">
+                <div class="flex flex-col justify-center leading-none">
                     <span class="text-xl md:text-2xl font-audiowide text-remsei-dark leading-none tracking-tight uppercase">Remsei</span>
-                    <span class="text-xs md:text-sm font-semibold text-remsei-blue leading-none tracking-widest uppercase mt-0 md:-mt-2">Klímatechnika</span>
-                    <span class="text-[8px] md:text-[8px] text-remsei-dark leading-none tracking-widest mt-0">Klíma, Hőszivattyú, Karbantartás</span>
+                    <span class="font-montserrat font-semibold text-remsei-dark text-[9px] md:text-[11px] tracking-[0.2em] uppercase whitespace-nowrap mt-1">
+                        <span class="text-remsei-blue">K</span>límatechnika
+                    </span>
+                    <!-- rövid kék elválasztó vonal, mint a logón -->
+                    <span class="block w-8 md:w-10 h-px bg-remsei-blue my-1"></span>
+                    <!-- alsó szlogen kék pontokkal -->
+                    <span class="flex items-center gap-1.5 font-montserrat font-medium text-remsei-dark text-[7px] md:text-[8px] tracking-[0.1em] uppercase whitespace-nowrap">
+                        Klíma
+                        <span class="inline-block w-1 h-1 rounded-full bg-remsei-blue"></span>
+                        Hőszivattyú
+                        <span class="inline-block w-1 h-1 rounded-full bg-remsei-blue"></span>
+                        Karbantartás
+                    </span>
                 </div>
             </a>
 
             <!-- Asztali Menü -->
             <div class="hidden md:flex items-center space-x-6">
                 <a href="termekek.html" class="text-remsei-dark hover:text-remsei-blue font-bold transition">Készülékek</a>
+                <a href="referenciak.html" class="text-remsei-dark hover:text-remsei-blue font-bold transition">Referenciák</a>
                 <a href="index.html#szolgaltatasok" class="text-remsei-dark hover:text-remsei-blue font-bold transition">Szolgáltatások</a>
                 <a href="index.html#kapcsolat" class="text-remsei-dark hover:text-remsei-blue font-bold transition">Kapcsolat</a>
                 <a href="tel:+36706118131" class="flex items-center gap-2 bg-remsei-dark text-white px-5 py-2 rounded-md font-bold hover:bg-gray-800 transition shadow-sm ml-4">
@@ -93,6 +141,7 @@
     <!-- pt-24: Eltolja a menüpontokat lefelé, hogy ne lógjanak a navbar alá -->
     <div id="mobileMenu" class="fixed inset-0 bg-white z-40 flex flex-col items-center justify-center space-y-8 transform -translate-y-full opacity-0 pointer-events-none transition-all duration-300">
         <a href="termekek.html" class="mobile-link text-remsei-dark font-black text-3xl hover:text-remsei-blue transition">Készülékek</a>
+        <a href="referenciak.html" class="mobile-link text-remsei-dark font-black text-3xl hover:text-remsei-blue transition">Referenciák</a>
         <a href="index.html#szolgaltatasok" class="mobile-link text-remsei-dark font-black text-3xl hover:text-remsei-blue transition">Szolgáltatások</a>
         <a href="index.html#kapcsolat" class="mobile-link text-remsei-dark font-black text-3xl hover:text-remsei-blue transition">Kapcsolat</a>
         <a href="tel:+36706118131" class="bg-remsei-blue text-white text-center py-4 px-10 rounded-full font-bold mt-8 shadow-xl text-xl hover:bg-blue-700 transition">
@@ -111,14 +160,24 @@
     <!-- ========================================================= -->
     <!--                      HERO SZEKCIÓ                         -->
     <!-- ========================================================= -->
-    <header class="pt-36 pb-20 px-4 bg-white text-center border-b border-gray-200 bg-cover bg-center bg-fixed" style="background-image: linear-gradient(135deg, rgba(214, 224, 235, 0.85) 0%, rgba(51, 62, 72, 0.85) 100%);">
-        <div class="max-w-3xl mx-auto">
-            <h1 class="text-2xl md:text-6xl font-audiowide font-weight-bold text-black mb-6 leading-tight uppercase text-outline">
-                Teremtsen tökéletes otthoni hőmérsékletet!  <span class="text-remsei-blue">Teljes körű klímaszerelés a tervezéstől a garanciális karbantartásig.</span>
+    <!-- h-hero: mindig pontosan egy képernyőnyi. overflow-hidden: a becsúszó elemek nem lógnak ki. -->
+    <!-- bg-remsei-dark: fallback szín, hogy a csúszás közben soha ne villanjon fehér. -->
+    <header class="relative h-hero flex items-center justify-center text-center px-4 overflow-hidden bg-remsei-dark border-b border-gray-200">
+
+        <!-- HÁTTÉRKÉP – jobbról csúszik be -->
+        <img src="fooldal_1.png" alt="" aria-hidden="true" fetchpriority="high"
+             class="hero-img absolute inset-0 w-full h-full object-cover object-center">
+
+        <!-- Sötétítő átfedés az olvashatóságért (a korábbi színátmenet, áttetszőbben, hogy a kép átüssön) -->
+        <div class="absolute inset-0" style="background-image: linear-gradient(135deg, rgba(214, 224, 235, 0.45) 0%, rgba(51, 62, 72, 0.70) 100%);"></div>
+
+        <!-- TARTALOM – szintén jobbról csúszik be (az eredeti, középre igazított szöveg) -->
+        <div class="hero-text relative z-10 max-w-3xl mx-auto">
+            <h1 class="text-xl md:text-2xl font-audiowide font-weight-bold text-black mb-6 leading-tight uppercase text-outline">
+                Tiszta levegő!<span class="text-remsei-blue"> Ideális hőmérséklet!</span>
             </h1>
             <p class="text-lg text-white mb-10 max-w-2xl mx-auto">
-                Klíma és hőszivattyú telepítés Veszprémben és környékén. 
-                Hűtő-fűtő split klímák – akár 70%-kal olcsóbb fűtés gáz helyett.
+                Klíma és hőszivattyú telepítés Veszprém és környékén.
             </p>
             <div class="flex flex-col sm:flex-row justify-center gap-4">
                 <a href="#termekek" class="bg-remsei-silver text-white text-lg px-8 py-4 rounded-lg font-bold hover:bg-gray-400 transition shadow-md">
@@ -255,7 +314,8 @@
                     <h2 class="text-2xl font-black mb-4 text-remsei-dark">Professzionális helyszíni felmérés</h2>
                     <p class="text-gray-600 mb-4">Tapasztalt szakértőnk személyesen felméri otthonát, hogy a hőterhelés alapján a tökéletes gépet és a legesztétikusabb telepítési módot javasoljuk.</p>
                     <div class="inline-block bg-blue-50 text-remsei-blue font-bold px-4 py-3 rounded-lg border border-blue-100">
-                        Ingyenes felmérés
+                        Ingyenes felmérés 
+                        <span class="font-normal text-sm block mt-1 text-gray-500">(Megrendelés esetén a végösszegből 100%-ban jóváírjuk)</span>
                     </div>
                 </div>
                 <div class="md:w-1/3 mt-8 md:mt-0 text-center">
@@ -380,9 +440,9 @@
                     Megbízható klíma és hőszivattyú telepítés, karbantartás és szervizelés precíz munkavégzéssel, hivatalos garanciával.
                 </p>
                 <div class="text-xs text-gray-500 space-y-1">
-                    <p>Üzemeltető: Remsei Szabolcs EV.</p>
-                    <p>Adószám: 56984404-2-39</p>
-                    <!--<p>F-Gáz azonosító: 1000000000000</p>-->
+                    <p>Üzemeltető: Remsei Klímatechnika Kft.</p>
+                    <p>Adószám: 12345678-2-19</p>
+                    <p>F-Gáz azonosító: 1000000000000</p>
                 </div>
             </div>
 
