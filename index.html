@@ -164,9 +164,12 @@
     <header class="relative h-hero flex items-center justify-center text-center px-4 overflow-hidden bg-remsei-dark border-b border-gray-200">
 
         <!-- HÁTTÉRKÉP – jobbról csúszik be -->
-        <img src="fooldal_1.jpg" alt="" aria-hidden="true" fetchpriority="high"
-     class="hero-img absolute left-0 right-0 bottom-0 w-full object-cover object-top"
-     style="top: var(--nav-h, 5rem);">
+        <!-- HÁTTÉRKÉP – a navbar ALATT kezdődik, és kitölti a maradék képernyőt -->
+<div class="hero-img absolute left-0 right-0 bottom-0 overflow-hidden" style="top: var(--nav-h, 5rem);">
+    <img src="fooldal_1.jpg" alt="" aria-hidden="true" fetchpriority="high"
+         class="w-full h-full object-cover object-top">
+</div>
+
 
         <!-- Sötétítő átfedés az olvashatóságért (a korábbi színátmenet, áttetszőbben, hogy a kép átüssön) -->
         <div class="absolute inset-0" style="background-image: linear-gradient(135deg, rgba(214, 224, 235, 0.45) 0%, rgba(51, 62, 72, 0.70) 100%);"></div>
