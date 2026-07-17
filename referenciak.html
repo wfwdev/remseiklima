@@ -7,7 +7,7 @@
     <meta name="description" content="Elkészült klíma és hőszivattyú telepítéseink Veszprémben és környékén. Nézze meg referenciamunkáinkat!">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -16,8 +16,19 @@
                     colors: {
                         remsei: { blue: '#4c749c', dark: '#333e48', silver: '#a1aab2' }
                     },
+                    // ITT DEFINIÁLJUK AZ ÚJ BETŰTÍPUST
                     fontFamily: {
                         audiowide: ['Audiowide', 'sans-serif'],
+                        montserrat: ['Montserrat', 'sans-serif'],
+                    },
+                    animation: {
+                        'infinite-scroll': 'infinite-scroll 25s linear infinite',
+                    },
+                    keyframes: {
+                        'infinite-scroll': {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-50%)' }
+                        }
                     }
                 }
             }
@@ -38,16 +49,29 @@
     <!-- ========================================================= -->
     <!--                       NAVIGÁCIÓ                           -->
     <!-- ========================================================= -->
+    
+    <!-- Felső sáv: z-50 réteg és fix fehér háttér, így SOHA nem takarható el -->
     <nav class="bg-white shadow-md fixed w-full z-50 border-b-4 border-remsei-blue">
         <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center relative">
-
+            
             <!-- Logó -->
             <a href="index.html" class="flex items-center gap-3 relative z-50">
-                <img src="remsei-logo.png" alt="Remsei Klíma Logó" class="h-10 md:h-12 object-contain">
-                <div class="flex flex-col justify-center">
-                    <span class="text-xl md:text-2xl font-audiowide text-remsei-dark leading-none tracking-tight uppercase">Remsei</span>
-                    <span class="text-xs md:text-sm font-semibold text-remsei-blue leading-none tracking-widest uppercase mt-0 md:-mt-2">Klímatechnika</span>
-                    <span class="text-[8px] md:text-[8px] text-remsei-dark leading-none tracking-widest mt-0">Klíma, Hőszivattyú, Karbantartás</span>
+                <img src="remsei-logo.png" alt="Remsei Klíma Logó" class="h-10 md:h-14 object-contain">
+                <div class="flex flex-col justify-center leading-none">
+                    <span class="text-xl md:text-xl font-audiowide text-remsei-dark leading-none tracking-tight uppercase">Remsei</span>
+                    <span class="font-montserrat font-semibold text-remsei-dark text-[9px] md:text-[11px] tracking-[0.2em] uppercase whitespace-nowrap mt-0">
+                        <span class="text-remsei-blue">K</span>límatechnika
+                    </span>
+                    <!-- rövid kék elválasztó vonal, mint a logón -->
+                    <span class="block w-8 md:w-10 h-px bg-remsei-blue my-1"></span>
+                    <!-- alsó szlogen kék pontokkal -->
+                    <span class="flex items-center gap-1.5 font-montserrat font-medium text-remsei-dark text-[7px] md:text-[8px] tracking-[0.1em] uppercase whitespace-nowrap">
+                        Klíma
+                        <span class="inline-block w-1 h-1 rounded-full bg-remsei-blue"></span>
+                        Hőszivattyú
+                        <span class="inline-block w-1 h-1 rounded-full bg-remsei-blue"></span>
+                        Karbantartás
+                    </span>
                 </div>
             </a>
 
@@ -60,6 +84,7 @@
             </div>
 
             <!-- Hamburger Gomb (Mobilon) -->
+            <!-- A gomb is a bg-white miatt nem lesz átlátszó -->
             <button id="hamburgerBtn" class="md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 focus:outline-none cursor-pointer bg-white">
                 <span class="line-1 w-7 h-0.5 bg-remsei-dark transition-all duration-300 origin-center"></span>
                 <span class="line-2 w-7 h-0.5 bg-remsei-dark transition-all duration-300"></span>
@@ -71,6 +96,8 @@
     <!-- ========================================================= -->
     <!--                 MOBILOS MENÜ OVERLAY                      -->
     <!-- ========================================================= -->
+    <!-- z-40 réteg: A navigáció (z-50) MÖGÖTT van, onnan csúszik ki -->
+    <!-- pt-24: Eltolja a menüpontokat lefelé, hogy ne lógjanak a navbar alá -->
     <div id="mobileMenu" class="fixed inset-0 bg-white z-40 flex flex-col items-center justify-center space-y-8 transform -translate-y-full opacity-0 pointer-events-none transition-all duration-300">
         <a href="termekek.html" class="mobile-link text-remsei-dark font-black text-3xl hover:text-remsei-blue transition">Készülékek</a>
         <a href="referenciak.html" class="mobile-link text-remsei-dark font-black text-3xl hover:text-remsei-blue transition">Referenciák</a>
@@ -79,6 +106,7 @@
         <a href="tel:+36706118131" class="bg-remsei-blue text-white text-center py-4 px-10 rounded-full font-bold mt-8 shadow-xl text-xl hover:bg-blue-700 transition">
             📞 Hívás Most
         </a>
+        <!-- ÚJ: Facebook link a mobil menübe -->
         <a href="https://www.facebook.com/profile.php?id=61591746097631" target="_blank" class="flex items-center justify-center gap-2 text-remsei-dark font-bold hover:text-[#1877F2] transition mt-4">
             <svg class="w-6 h-6 text-[#1877F2]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
@@ -300,10 +328,10 @@
                 <p class="text-sm leading-relaxed mb-4">
                     Megbízható klíma és hőszivattyú telepítés, karbantartás és szervizelés precíz munkavégzéssel, hivatalos garanciával.
                 </p>
-                <div class="text-xs text-gray-500 space-y-1">
-                    <p>Üzemeltető: Remsei Klímatechnika Kft.</p>
-                    <p>Adószám: 12345678-2-19</p>
-                    <p>F-Gáz azonosító: 1000000000000</p>
+                <div class="text-xs text-white space-y-1">
+                    <p>Üzemeltető: Remsei Szabolcs EV.</p>
+                    <p>Adószám: 56984404-2-39</p>
+                    <!-- <p>F-Gáz azonosító: 1000000000000</p> -->
                 </div>
             </div>
 
@@ -326,7 +354,7 @@
                     <li>
                         <a href="tel:+36706118131" class="flex items-center justify-center md:justify-start gap-3 hover:text-white transition group">
                             <span class="bg-gray-800 p-2 rounded-full group-hover:bg-remsei-blue transition">📞</span>
-                            <span class="font-bold text-lg">+36 70 611 8131</span>
+                            <span>+36 70 611 8131</span>
                         </a>
                     </li>
                     <li>
@@ -359,7 +387,7 @@
             <div class="flex space-x-6">
                 <a href="adatkezeles.html" class="hover:text-gray-300 transition">Adatkezelési tájékoztató</a>
             </div>
-            <p>Weboldal készítés: <a href="https://wfw.hu" target="_blank" class="text-gray-400 font-bold hover:text-white transition">Kovács Gábor | WFW.hu</a></p>
+            <p>Weboldal készítés: <a href="https://wfw.hu" target="_blank" class="text-gray-400 font-bold hover:text-white transition">Kovács Gábor | wfw.hu</a></p>
         </div>
     </footer>
 
