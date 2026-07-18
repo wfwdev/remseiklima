@@ -45,52 +45,57 @@
             scrollbar-width: none;
         }
 
-        /* =========================================================
-           JAVÍTVA (3.): fix navbar + ugrólinkek
-           Enélkül a #szolgaltatasok / #kapcsolat célszekció teteje
-           a fejléc MÖGÉ görög. */
+        /* Fix navbar + ugrólinkek: enélkül a célszekció teteje a fejléc MÖGÉ görög */
         section[id] {
             scroll-margin-top: calc(var(--nav-h) + 1rem);
         }
 
         /* =========================================================
-           HERO: mindig legalább egy képernyőnyi
-           JAVÍTVA (6.): height helyett min-height – ha a tartalom
-           magasabb (fekvő telefon, kis laptop), nem vágódik le.
-           JAVÍTVA (5.): padding-top = navbar magassága, így a szöveg
-           optikailag is középen van, nem a fejléc alá csúszva.
-           A border-box miatt a padding NEM növeli 100dvh fölé. */
+           HERO: mindig legalább egy képernyőnyi.
+           min-height (nem height): ha a tartalom magasabb, nem vágódik le.
+           padding-top: a navbar magassága, hogy a szöveg optikailag
+           is középen legyen. A border-box miatt ez NEM növeli 100dvh fölé. */
         .h-hero {
             min-height: 100vh;   /* fallback régebbi böngészőkre */
             min-height: 100dvh;  /* modern böngészők: a ténylegesen látható képernyő */
             padding-top: var(--nav-h);
         }
 
-        /* JAVÍTVA (1.): a régi "text-outline" szabályból hiányzott a pont,
-           ezért soha nem érvényesült (és a 10px-es stroke amúgy is
-           olvashatatlan lett volna). Helyette finom árnyék, ami a
-           fényképen is elválasztja a szöveget a háttértől. */
+        /* =========================================================
+           JAVÍTVA: FEKVŐ TELEFON
+           A régi "text-4xl md:text-6xl" a hibás: fekvő telefonon a
+           képernyő 844-932px SZÉLES, ezért átlépi a md: (768px)
+           töréspontot, és 60px-es címet kap egy 390px MAGAS kijelzőn.
+           Megoldás: a méret a magasságtól is függjön (9vh), és soha
+           ne legyen nagyobb, mint amennyi elfér.
+           A margókat is itt adjuk meg (nem Tailwind mb-6 / mb-10),
+           hogy alacsony képernyőn arányosan csökkenjenek. */
         .hero-title {
+            font-size: max(1.5rem, min(9vw, 9vh, 3.75rem));
+            margin-bottom: clamp(0.75rem, 2.5vh, 1.5rem);
             text-shadow: 0 2px 10px rgba(255, 255, 255, 0.45);
         }
         .hero-lead {
+            font-size: clamp(0.95rem, 2.2vh, 1.125rem);
+            margin-bottom: clamp(1rem, 4vh, 2.5rem);
             text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
+        }
+        /* Nagyon alacsony (fekvő) képernyőn a gombok is kisebbek */
+        @media (max-height: 480px) {
+            .hero-btn { padding-top: 0.65rem; padding-bottom: 0.65rem; font-size: 1rem; }
         }
 
         /* HERO belépő animációk (JS nélkül, betöltéskor futnak) */
-        /* A szöveg jobbról csúszik be */
         .hero-text {
             opacity: 0;
             animation: heroInRight 0.9s ease-out 0.25s forwards;
         }
-        /* A háttérkép is jobbról csúszik be (kicsit korábban indul) */
         .hero-img {
             opacity: 0;
             transform-origin: center top;
             animation: heroInRightBg 1.1s ease-out 0.05s forwards;
         }
         @keyframes heroInRight {
-            /* Nagyobb érték = markánsabb "jobbról beúszás" */
             from { opacity: 0; transform: translateX(80px); }
             to   { opacity: 1; transform: translateX(0); }
         }
@@ -99,7 +104,6 @@
             from { opacity: 0; transform: translateX(70px) scale(1.08); }
             to   { opacity: 1; transform: translateX(0)    scale(1.08); }
         }
-        /* Akadálymentesség: aki kikapcsolta az animációkat, annak nem mozog */
         @media (prefers-reduced-motion: reduce) {
             .hero-text, .hero-img { animation: none; opacity: 1; }
         }
@@ -118,16 +122,20 @@
             <!-- Logó -->
             <a href="index.html" class="flex items-center gap-3 relative z-50">
                 <img src="remsei-logo.png" alt="Remsei Klíma Logó" class="h-10 md:h-12 object-contain">
-                <div class="flex flex-col justify-center leading-none">
-                    <!-- A logóval egyező, geometrikus betű (Montserrat) -->
-                    <span class="font-montserrat font-bold text-remsei-dark text-lg md:text-2xl tracking-[0.22em] uppercase whitespace-nowrap">Remsei</span>
-                    <span class="font-montserrat font-semibold text-remsei-dark text-[9px] md:text-[11px] tracking-[0.2em] uppercase whitespace-nowrap mt-1">
+
+                <!-- JAVÍTVA: a szövegblokk MAGASSÁGA pontosan a logóé (h-10 / md:h-12),
+                     az overflow-hidden pedig garantálja, hogy soha ne lógjon túl.
+                     Számított magasság: mobilon 38px (a 40-ből), asztalin 47px (a 48-ból). -->
+                <div class="flex flex-col justify-center leading-none h-10 md:h-12 overflow-hidden">
+                    <!-- A "Remsei" felirat Audiowide, ahogy kérted -->
+                    <span class="font-audiowide text-remsei-dark text-[15px] md:text-[18px] leading-none tracking-[0.06em] uppercase whitespace-nowrap">Remsei</span>
+                    <span class="font-montserrat font-semibold text-remsei-dark text-[8px] md:text-[10px] leading-none tracking-[0.2em] uppercase whitespace-nowrap mt-[2px]">
                         <span class="text-remsei-blue">K</span>límatechnika
                     </span>
                     <!-- rövid kék elválasztó vonal, mint a logón -->
-                    <span class="block w-8 md:w-10 h-px bg-remsei-blue my-1"></span>
+                    <span class="block w-8 md:w-10 h-px bg-remsei-blue my-[3px] md:my-[4px]"></span>
                     <!-- alsó szlogen kék pontokkal -->
-                    <span class="flex items-center gap-1.5 font-montserrat font-medium text-remsei-dark text-[7px] md:text-[8px] tracking-[0.1em] uppercase whitespace-nowrap">
+                    <span class="flex items-center gap-1 md:gap-1.5 font-montserrat font-medium text-remsei-dark text-[6px] md:text-[8px] leading-none tracking-[0.1em] uppercase whitespace-nowrap">
                         Klíma
                         <span class="inline-block w-1 h-1 rounded-full bg-remsei-blue"></span>
                         Hőszivattyú
@@ -146,7 +154,6 @@
             </div>
 
             <!-- Hamburger Gomb (Mobilon) -->
-            <!-- A gomb is a bg-white miatt nem lesz átlátszó -->
             <button id="hamburgerBtn" class="md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 focus:outline-none cursor-pointer bg-white">
                 <span class="line-1 w-7 h-0.5 bg-remsei-dark transition-all duration-300 origin-center"></span>
                 <span class="line-2 w-7 h-0.5 bg-remsei-dark transition-all duration-300"></span>
@@ -157,7 +164,8 @@
 
     <!-- A navbar magasságának bemérése.
          Közvetlenül a <nav> után fut, hogy a hero már a helyes értékkel
-         rajzolódjon ki, és ne ugorjon egyet betöltéskor. -->
+         rajzolódjon ki, és ne ugorjon egyet betöltéskor.
+         Az orientationchange miatt forgatáskor is újraszámol. -->
     <script>
         (function () {
             const nav = document.querySelector('nav');
@@ -167,6 +175,7 @@
             }
             setNavH();
             window.addEventListener('resize', setNavH);
+            window.addEventListener('orientationchange', function () { setTimeout(setNavH, 200); });
             window.addEventListener('load', setNavH);
             if (document.fonts && document.fonts.ready) document.fonts.ready.then(setNavH);
         })();
@@ -175,7 +184,6 @@
     <!-- ========================================================= -->
     <!--                 MOBILOS MENÜ OVERLAY                      -->
     <!-- ========================================================= -->
-    <!-- z-40 réteg: A navigáció (z-50) MÖGÖTT van, onnan csúszik ki -->
     <div id="mobileMenu" class="fixed inset-0 bg-white z-40 flex flex-col items-center justify-center space-y-8 transform -translate-y-full opacity-0 pointer-events-none transition-all duration-300">
         <a href="termekek.html" class="mobile-link text-remsei-dark font-black text-3xl hover:text-remsei-blue transition">Készülékek</a>
         <a href="referenciak.html" class="mobile-link text-remsei-dark font-black text-3xl hover:text-remsei-blue transition">Referenciák</a>
@@ -184,7 +192,6 @@
         <a href="tel:+36706118131" class="bg-remsei-blue text-white text-center py-4 px-10 rounded-full font-bold mt-8 shadow-xl text-xl hover:bg-blue-700 transition">
             📞 Hívás Most
         </a>
-        <!-- Facebook link a mobil menüben -->
         <a href="https://www.facebook.com/profile.php?id=61591746097631" target="_blank" class="flex items-center justify-center gap-2 text-remsei-dark font-bold hover:text-[#1877F2] transition mt-4">
             <svg class="w-6 h-6 text-[#1877F2]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
@@ -197,9 +204,7 @@
     <!-- ========================================================= -->
     <!--                      HERO SZEKCIÓ                         -->
     <!-- ========================================================= -->
-    <!-- h-hero: legalább egy képernyőnyi, a navbar magasságával eltolva. -->
-    <!-- bg-remsei-dark: fallback szín, hogy a csúszás közben soha ne villanjon fehér. -->
-    <header class="relative h-hero flex items-center justify-center text-center px-4 py-10 overflow-hidden bg-remsei-dark border-b border-gray-200">
+    <header class="relative h-hero flex items-center justify-center text-center px-4 py-8 overflow-hidden bg-remsei-dark border-b border-gray-200">
 
         <!-- HÁTTÉRKÉP – a navbar ALATT kezdődik, és kitölti a maradék képernyőt.
              A külső div feszül ki; a kép azt tölti ki (egy <img> önmagában
@@ -212,23 +217,21 @@
         <!-- Sötétítő átfedés az olvashatóságért -->
         <div class="absolute inset-0" style="background-image: linear-gradient(135deg, rgba(214, 224, 235, 0.45) 0%, rgba(51, 62, 72, 0.70) 100%);"></div>
 
-        <!-- TARTALOM – szintén jobbról csúszik be -->
+        <!-- TARTALOM – jobbról csúszik be -->
         <div class="hero-text relative z-10 max-w-3xl mx-auto">
-            <!-- JAVÍTVA (2.): a "font-weight-bold" nem Tailwind osztály volt,
-                 semmit nem csinált. Az Audiowide amúgy is csak 400-as vastagságú. -->
-            <h1 class="hero-title text-4xl md:text-6xl font-audiowide text-black mb-6 leading-tight uppercase">
+            <!-- A méret és a margók a CSS-ben, magasságfüggően (lásd .hero-title) -->
+            <h1 class="hero-title font-audiowide text-black leading-tight uppercase">
                 Tiszta levegő!<br><span class="text-remsei-blue">Ideális hőmérséklet!</span>
             </h1>
-            <p class="hero-lead text-lg text-white mb-10 max-w-2xl mx-auto">
+            <p class="hero-lead text-white max-w-2xl mx-auto">
                 Klíma és hőszivattyú telepítés Veszprém és környékén.
             </p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <!-- JAVÍTVA (4.): fehér helyett sötét szöveg – az ezüst háttéren
-                     a fehér kontrasztaránya csak 2,35:1 volt (minimum 4,5:1 kell) -->
-                <a href="tel:+36706118131" class="bg-remsei-silver text-remsei-dark text-lg px-8 py-4 rounded-lg font-bold hover:bg-gray-300 transition shadow-md">
+            <div class="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
+                <!-- Sötét szöveg az ezüst gombon: fehérrel a kontraszt csak 2,35:1 volt -->
+                <a href="tel:+36706118131" class="hero-btn bg-remsei-silver text-remsei-dark text-lg px-8 py-4 rounded-lg font-bold hover:bg-gray-300 transition shadow-md">
                     📞 +36 70 611 8131
                 </a>
-                <a href="#kapcsolat" class="bg-remsei-blue text-white text-lg px-8 py-4 rounded-lg font-bold hover:bg-blue-700 transition shadow-md">
+                <a href="#kapcsolat" class="hero-btn bg-remsei-blue text-white text-lg px-8 py-4 rounded-lg font-bold hover:bg-blue-700 transition shadow-md">
                     Ingyenes Ajánlatkérés
                 </a>
             </div>
@@ -247,12 +250,9 @@
         </div>
 
         <!-- LAPOZÓ KONTÉNER -->
-        <!-- flex és overflow-x-auto: Vízszintes görgetés -->
-        <!-- snap-x snap-mandatory: Mágnesként a helyére húzza a kártyát -->
         <div class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-8 px-4 hide-scrollbar">
 
             <!-- 1. KÁRTYA -->
-            <!-- w-[85%]: Mobilon 85% széles, így belóg a következő. md:w-[31%]: Asztalin 3 db fér el egymás mellett -->
             <div class="snap-center shrink-0 w-[85%] md:w-[31%] bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden flex flex-col relative">
                 <div class="bg-remsei-dark text-white text-xs font-bold px-3 py-1 rounded-br-lg absolute top-0 left-0 z-10">Akció</div>
                 <div class="h-36 bg-gray-50 flex items-center justify-center border-b border-gray-100">
@@ -266,7 +266,6 @@
                         <li class="flex items-start gap-1.5"><span class="text-remsei-blue font-bold">✓</span> Beépített Wi-Fi vezérlés</li>
                         <li class="flex items-start gap-1.5"><span class="text-remsei-blue font-bold">✓</span> Fűtés −25 °C-ig</li>
                     </ul>
-                    <!-- Ár és gomb egy sorban a helytakarékosságért -->
                     <div class="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between">
                         <div class="text-xl font-black text-remsei-dark">274 900 Ft</div>
                         <a href="#kapcsolat" class="bg-remsei-blue text-white text-sm font-bold px-4 py-2 rounded-md hover:bg-blue-700 transition">Érdekel</a>
@@ -374,26 +373,35 @@
     <!-- ========================================================= -->
     <!--                      MÁRKÁK (MARQUEE)                     -->
     <!-- ========================================================= -->
+    <!--
+        JAVÍTVA: az akadás oka
+        Korábban mind a 8 logó EGY flex konténerben volt, közös gap-16-tal.
+        A translateX(-50%) a teljes szélesség felét tolja el, ami NEM egyezik
+        pontosan egy szett + egy köz szélességével → minden körben ugrott egyet.
+        Most két KÜLÖN, azonos felépítésű szett van (mindkettőn ugyanaz a
+        belső gap és ugyanaz a záró pr-16), így a fél szélesség pontosan
+        egy szettnyi → a ciklus tökéletesen folytonos.
+    -->
     <section class="py-10 bg-gray-100 border-y border-gray-100 overflow-hidden">
-
-        <!-- A maszkoló doboz -->
         <div class="relative w-full flex overflow-hidden group">
 
-            <!-- Az animált, dupla széles doboz (gap-16 adja a tökéletes egyenlő távolságot) -->
-            <div class="flex whitespace-nowrap animate-infinite-scroll group-hover:[animation-play-state:paused] items-center gap-16 px-8">
+            <div class="flex w-max animate-infinite-scroll group-hover:[animation-play-state:paused]">
 
-                <!-- === 1. SZETT (Eredeti) === -->
-                <!-- A grayscale osztály miatt szürkék lesznek, hoverre kiszínesednek -->
-                <img src="Panasonic.svg.webp" alt="Panasonic" class="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-pointer">
-                <img src="Midea.svg.webp" alt="Midea" class="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-pointer">
-                <img src="Gree.svg.webp" alt="Gree" class="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-pointer">
-                <img src="DAIKIN.svg.webp" alt="Daikin" class="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-pointer">
+                <!-- === 1. SZETT === -->
+                <div class="flex items-center gap-16 pr-16 shrink-0">
+                    <img src="Panasonic.svg.webp" alt="Panasonic" class="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all">
+                    <img src="Midea.svg.webp" alt="Midea" class="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all">
+                    <img src="Gree.svg.webp" alt="Gree" class="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all">
+                    <img src="DAIKIN.svg.webp" alt="Daikin" class="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all">
+                </div>
 
-                <!-- === 2. SZETT (A végtelenített hatáshoz pontosan ugyanaz még egyszer) === -->
-                <img src="Panasonic.svg.webp" alt="Panasonic" class="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-pointer">
-                <img src="Midea.svg.webp" alt="Midea" class="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-pointer">
-                <img src="Gree.svg.webp" alt="Gree" class="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-pointer">
-                <img src="DAIKIN.svg.webp" alt="Daikin" class="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-pointer">
+                <!-- === 2. SZETT (pontosan ugyanaz, a végtelenített hatáshoz) === -->
+                <div class="flex items-center gap-16 pr-16 shrink-0" aria-hidden="true">
+                    <img src="Panasonic.svg.webp" alt="" class="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all">
+                    <img src="Midea.svg.webp" alt="" class="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all">
+                    <img src="Gree.svg.webp" alt="" class="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all">
+                    <img src="DAIKIN.svg.webp" alt="" class="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all">
+                </div>
 
             </div>
         </div>
