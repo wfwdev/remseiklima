@@ -16,32 +16,179 @@
                     colors: {
                         remsei: { blue: '#4c749c', dark: '#333e48', silver: '#a1aab2' }
                     },
-                    // ITT DEFINIÁLJUK AZ ÚJ BETŰTÍPUST
                     fontFamily: {
                         audiowide: ['Audiowide', 'sans-serif'],
                         montserrat: ['Montserrat', 'sans-serif'],
-                    },
-                    animation: {
-                        'infinite-scroll': 'infinite-scroll 25s linear infinite',
-                    },
-                    keyframes: {
-                        'infinite-scroll': {
-                            '0%': { transform: 'translateX(0)' },
-                            '100%': { transform: 'translateX(-50%)' }
-                        }
                     }
                 }
             }
         }
     </script>
     <style>
-        /* Finom belépő animáció a lightbox tartalmának */
+        /* A navbar valódi magassága – a JS méri be, ez csak a tartalék érték */
+        :root { --nav-h: 5rem; }
+
+        section[id] { scroll-margin-top: calc(var(--nav-h) + 1rem); }
+
+        /* Az oldal fejléce mindig a navbar alatt kezdődjön */
+        .page-header { padding-top: calc(var(--nav-h) + 2rem); }
+
+        /* =========================================================
+           MOBIL MENÜ (azonos az index.html / termekek.html megoldásával) */
+        #mobileMenu .menu-inner { padding-top: calc(var(--nav-h) + 1.5rem); }
+        #mobileMenu .mobile-link { font-size: 1.5rem; }
+        @media (min-height: 720px) { #mobileMenu .mobile-link { font-size: 1.75rem; } }
+        @media (max-height: 520px) {
+            #mobileMenu .mobile-link { font-size: 1.125rem; }
+            #mobileMenu .menu-inner  { padding-top: calc(var(--nav-h) + 0.75rem); }
+            #mobileMenu .menu-row    { padding-top: 0.6rem; padding-bottom: 0.6rem; }
+        }
+
+        /* =========================================================
+           GALÉRIA RÁCS
+           Mobilon: vízszintesen csúsztatható sáv (snap).
+           md-től: VÁLTOZÓ MÉRETŰ rács – egy nagy, két magas és két
+           széles csempe töri meg a katalógus-hatást.
+           A grid-auto-flow: dense tölti ki az esetleges lyukakat.
+           A teljes elrendezés itt van (nem Tailwind osztályokban),
+           hogy a CDN által futásidőben beszúrt CSS ne írja felül. */
+        .gallery-grid {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-padding-left: 1rem;
+            gap: 0.75rem;
+            padding: 0 1rem 1rem;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .gallery-grid::-webkit-scrollbar { display: none; }
+
+        .gallery-item {
+            position: relative;
+            display: block;
+            overflow: hidden;
+            border-radius: 0.75rem;
+            background: rgba(255, 255, 255, 0.06);
+            flex: 0 0 78%;
+            scroll-snap-align: start;
+            aspect-ratio: 4 / 3;
+        }
+        @media (min-width: 640px) { .gallery-item { flex-basis: 46%; } }
+
+        @media (min-width: 768px) {
+            .gallery-grid {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                grid-auto-rows: 150px;
+                grid-auto-flow: dense;
+                gap: 1rem;
+                padding: 0;
+                overflow: visible;
+            }
+            .gallery-item { flex: initial; aspect-ratio: auto; height: 100%; }
+            .t-big  { grid-column: span 2; grid-row: span 2; }
+            .t-wide { grid-column: span 2; }
+            .t-tall { grid-row: span 2; }
+        }
+        @media (min-width: 1024px) {
+            .gallery-grid {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                grid-auto-rows: 180px;
+            }
+        }
+
+        /* --- Csempe belső elemei --- */
+        .gallery-item img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .gallery-item:hover img { transform: scale(1.05); }
+
+        /* Vékony keret hoverre – finomabb, mint egy sötét fátyol */
+        .gallery-item::after {
+            content: "";
+            position: absolute; inset: 0;
+            border-radius: 0.75rem;
+            box-shadow: inset 0 0 0 0 rgba(76, 116, 156, 0);
+            transition: box-shadow 300ms ease;
+            pointer-events: none;
+        }
+        .gallery-item:hover::after { box-shadow: inset 0 0 0 2px rgba(76, 116, 156, 0.9); }
+
+        .tile-num {
+            position: absolute; top: 0.65rem; left: 0.8rem;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em;
+            color: rgba(255, 255, 255, 0.75);
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+            z-index: 2;
+        }
+
+        /* Alulról felúszó sötétítés a felirat mögé */
+        .tile-veil {
+            position: absolute; left: 0; right: 0; bottom: 0; height: 55%;
+            background: linear-gradient(to top, rgba(20, 25, 30, 0.85), rgba(20, 25, 30, 0));
+            opacity: 1;
+            transition: opacity 300ms ease;
+            pointer-events: none;
+        }
+        .tile-caption {
+            position: absolute; left: 0.9rem; right: 2.9rem; bottom: 0.8rem;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.78rem; font-weight: 500; line-height: 1.25;
+            color: #fff;
+            z-index: 2;
+            transition: transform 350ms cubic-bezier(0.22, 1, 0.36, 1), opacity 300ms ease;
+        }
+
+        /* Nagyítás-jelzés: mindig látszik (érintőn is), hoverre erősödik */
+        .tile-zoom {
+            position: absolute; right: 0.8rem; bottom: 0.8rem;
+            width: 1.9rem; height: 1.9rem;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.18);
+            color: #fff;
+            opacity: 0.85;
+            transition: background 300ms ease, opacity 300ms ease, transform 300ms ease;
+            z-index: 2;
+        }
+        .tile-zoom svg { width: 0.95rem; height: 0.95rem; }
+        .gallery-item:hover .tile-zoom {
+            background: rgba(76, 116, 156, 0.95);
+            opacity: 1;
+            transform: scale(1.08);
+        }
+
+        /* Asztali gépen a felirat és a fátyol csak hoverre jelenik meg,
+           mobilon viszont mindig látszik (ott nincs hover). */
+        @media (min-width: 768px) and (hover: hover) {
+            .tile-veil    { opacity: 0; }
+            .tile-caption { opacity: 0; transform: translateY(0.5rem); }
+            .gallery-item:hover .tile-veil    { opacity: 1; }
+            .gallery-item:hover .tile-caption { opacity: 1; transform: translateY(0); }
+        }
+
+        /* =========================================================
+           MEGJELENÉS GÖRGETÉSRE (IntersectionObserver kapcsolja) */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 700ms ease-out, transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal.is-visible { opacity: 1; transform: none; }
+
+        /* Lightbox belépő animáció */
         @keyframes lbFade { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
         #lightbox:not(.hidden) figure { animation: lbFade 0.2s ease-out; }
 
-        /* Gördítősáv elrejtése a mobilos, vízszintesen csúsztatható galériához */
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* Aki kikapcsolta az animációkat, annak semmi nem mozog */
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { opacity: 1; transform: none; transition: none; }
+            .gallery-item img, .gallery-item:hover img { transition: none; transform: none; }
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-remsei-dark font-sans antialiased">
@@ -49,23 +196,19 @@
     <!-- ========================================================= -->
     <!--                       NAVIGÁCIÓ                           -->
     <!-- ========================================================= -->
-    
-    <!-- Felső sáv: z-50 réteg és fix fehér háttér, így SOHA nem takarható el -->
     <nav class="bg-white shadow-md fixed w-full z-50 border-b-4 border-remsei-blue">
         <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center relative">
-            
+
             <!-- Logó -->
             <a href="index.html" class="flex items-center gap-3 relative z-50">
-                <img src="remsei-logo.png" alt="Remsei Klíma Logó" class="h-10 md:h-14 object-contain">
-                <div class="flex flex-col justify-center leading-none">
-                    <span class="text-xl md:text-xl font-audiowide text-remsei-dark leading-none tracking-tight uppercase">Remsei</span>
-                    <span class="font-montserrat font-semibold text-remsei-dark text-[9px] md:text-[11px] tracking-[0.2em] uppercase whitespace-nowrap mt-0">
+                <img src="remsei-logo.png" alt="Remsei Klíma Logó" class="h-10 md:h-12 object-contain">
+                <div class="flex flex-col justify-center leading-none h-10 md:h-12 overflow-hidden">
+                    <span class="font-audiowide text-remsei-dark text-[15px] md:text-[18px] leading-none tracking-[0.06em] uppercase whitespace-nowrap">Remsei</span>
+                    <span class="font-montserrat font-semibold text-remsei-dark text-[8px] md:text-[10px] leading-none tracking-[0.2em] uppercase whitespace-nowrap mt-[2px]">
                         <span class="text-remsei-blue">K</span>límatechnika
                     </span>
-                    <!-- rövid kék elválasztó vonal, mint a logón -->
-                    <span class="block w-8 md:w-10 h-px bg-remsei-blue my-1"></span>
-                    <!-- alsó szlogen kék pontokkal -->
-                    <span class="flex items-center gap-1.5 font-montserrat font-medium text-remsei-dark text-[7px] md:text-[8px] tracking-[0.1em] uppercase whitespace-nowrap">
+                    <span class="block w-8 md:w-10 h-px bg-remsei-blue my-[3px] md:my-[4px]"></span>
+                    <span class="flex items-center gap-1 md:gap-1.5 font-montserrat font-medium text-remsei-dark text-[6px] md:text-[8px] leading-none tracking-[0.1em] uppercase whitespace-nowrap">
                         Klíma
                         <span class="inline-block w-1 h-1 rounded-full bg-remsei-blue"></span>
                         Hőszivattyú
@@ -78,13 +221,12 @@
             <!-- Asztali Menü -->
             <div class="hidden md:flex items-center space-x-6">
                 <a href="termekek.html" class="text-remsei-dark hover:text-remsei-blue font-bold transition">Készülékek</a>
-                <a href="referenciak.html" class="text-remsei-dark hover:text-remsei-blue font-bold transition">Referenciák</a>
+                <a href="referenciak.html" class="text-remsei-blue font-bold transition">Referenciák</a>
                 <a href="index.html#szolgaltatasok" class="text-remsei-dark hover:text-remsei-blue font-bold transition">Szolgáltatások</a>
                 <a href="index.html#kapcsolat" class="text-remsei-dark hover:text-remsei-blue font-bold transition">Kapcsolat</a>
             </div>
 
             <!-- Hamburger Gomb (Mobilon) -->
-            <!-- A gomb is a bg-white miatt nem lesz átlátszó -->
             <button id="hamburgerBtn" class="md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 focus:outline-none cursor-pointer bg-white">
                 <span class="line-1 w-7 h-0.5 bg-remsei-dark transition-all duration-300 origin-center"></span>
                 <span class="line-2 w-7 h-0.5 bg-remsei-dark transition-all duration-300"></span>
@@ -93,33 +235,65 @@
         </div>
     </nav>
 
+    <!-- A navbar magasságának bemérése -->
+    <script>
+        (function () {
+            const nav = document.querySelector('nav');
+            const root = document.documentElement;
+            function setNavH() {
+                if (nav) root.style.setProperty('--nav-h', nav.offsetHeight + 'px');
+            }
+            setNavH();
+            window.addEventListener('resize', setNavH);
+            window.addEventListener('orientationchange', function () { setTimeout(setNavH, 200); });
+            window.addEventListener('load', setNavH);
+            if (document.fonts && document.fonts.ready) document.fonts.ready.then(setNavH);
+        })();
+    </script>
+
     <!-- ========================================================= -->
     <!--                 MOBILOS MENÜ OVERLAY                      -->
     <!-- ========================================================= -->
-    <!-- z-40 réteg: A navigáció (z-50) MÖGÖTT van, onnan csúszik ki -->
-    <!-- pt-24: Eltolja a menüpontokat lefelé, hogy ne lógjanak a navbar alá -->
-    <div id="mobileMenu" class="fixed inset-0 bg-white z-40 flex flex-col items-center justify-center space-y-8 transform -translate-y-full opacity-0 pointer-events-none transition-all duration-300">
-        <a href="termekek.html" class="mobile-link text-remsei-dark font-black text-3xl hover:text-remsei-blue transition">Készülékek</a>
-        <a href="referenciak.html" class="mobile-link text-remsei-dark font-black text-3xl hover:text-remsei-blue transition">Referenciák</a>
-        <a href="index.html#szolgaltatasok" class="mobile-link text-remsei-dark font-black text-3xl hover:text-remsei-blue transition">Szolgáltatások</a>
-        <a href="index.html#kapcsolat" class="mobile-link text-remsei-dark font-black text-3xl hover:text-remsei-blue transition">Kapcsolat</a>
-        <a href="tel:+36706118131" class="bg-remsei-blue text-white text-center py-4 px-10 rounded-full font-bold mt-8 shadow-xl text-xl hover:bg-blue-700 transition">
-            📞 Hívás Most
-        </a>
-        <!-- ÚJ: Facebook link a mobil menübe -->
-        <a href="https://www.facebook.com/profile.php?id=61591746097631" target="_blank" class="flex items-center justify-center gap-2 text-remsei-dark font-bold hover:text-[#1877F2] transition mt-4">
-            <svg class="w-6 h-6 text-[#1877F2]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
-            </svg>
-            Facebook oldalunk
-        </a>
+    <div id="mobileMenu" class="fixed inset-0 bg-white z-40 overflow-y-auto overscroll-contain transform -translate-y-full opacity-0 pointer-events-none transition-all duration-300">
+
+        <div class="menu-inner min-h-full flex flex-col justify-center max-w-sm mx-auto px-6 pb-8">
+
+            <a href="termekek.html" class="mobile-link menu-row group flex items-center justify-between py-4 border-b border-gray-100 font-bold text-remsei-dark hover:text-remsei-blue transition">
+                <span>Készülékek</span>
+                <span class="text-remsei-blue text-xl opacity-40 group-hover:opacity-100 transition-all group-hover:translate-x-1">&rarr;</span>
+            </a>
+            <a href="referenciak.html" class="mobile-link menu-row group flex items-center justify-between py-4 border-b border-gray-100 font-bold text-remsei-blue transition">
+                <span>Referenciák</span>
+                <span class="text-remsei-blue text-xl transition-transform group-hover:translate-x-1">&rarr;</span>
+            </a>
+            <a href="index.html#szolgaltatasok" class="mobile-link menu-row group flex items-center justify-between py-4 border-b border-gray-100 font-bold text-remsei-dark hover:text-remsei-blue transition">
+                <span>Szolgáltatások</span>
+                <span class="text-remsei-blue text-xl opacity-40 group-hover:opacity-100 transition-all group-hover:translate-x-1">&rarr;</span>
+            </a>
+            <a href="index.html#kapcsolat" class="mobile-link menu-row group flex items-center justify-between py-4 border-b border-gray-100 font-bold text-remsei-dark hover:text-remsei-blue transition">
+                <span>Kapcsolat</span>
+                <span class="text-remsei-blue text-xl opacity-40 group-hover:opacity-100 transition-all group-hover:translate-x-1">&rarr;</span>
+            </a>
+
+            <a href="tel:+36706118131" class="flex items-center justify-center gap-2 bg-remsei-blue text-white text-center py-4 px-6 rounded-xl font-bold mt-8 shadow-lg text-lg hover:bg-blue-700 transition">
+                📞 +36 70 611 8131
+            </a>
+
+            <a href="https://www.facebook.com/profile.php?id=61591746097631" target="_blank" class="flex items-center justify-center gap-2 text-gray-500 text-sm font-semibold hover:text-[#1877F2] transition mt-5">
+                <svg class="w-5 h-5 text-[#1877F2]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+                </svg>
+                Facebook oldalunk
+            </a>
+
+        </div>
     </div>
 
 
     <!-- ========================================================= -->
     <!--                    OLDAL FEJLÉC                           -->
     <!-- ========================================================= -->
-    <header class="pt-28 md:pt-32 pb-12 px-4 bg-remsei-dark text-center">
+    <header class="page-header pb-12 px-4 bg-remsei-dark text-center">
         <div class="max-w-3xl mx-auto">
             <h1 class="text-2xl md:text-3xl font-audiowide text-white mb-4 uppercase tracking-wide">Referenciáink</h1>
             <div class="w-20 h-1 bg-remsei-blue mx-auto mb-5"></div>
@@ -131,137 +305,279 @@
 
 
     <!-- ========================================================= -->
-    <!--                    GALÉRIA (RÁCS)                         -->
+    <!--                    GALÉRIA                                -->
     <!-- ========================================================= -->
     <!--
         HASZNÁLAT:
-        - A képek a GYÖKÉRKÖNYVTÁRBAN vannak: rk_01 ... rk_13 (itt .jpg kiterjesztéssel feltételezve).
-          Ha a fájlok .png / .webp kiterjesztésuek, csak cseréld a ".jpg"-t (Find & Replace: .jpg -> .png).
-        - Egy kép = egy <a class="gallery-item"> blokk. Az "href" a nagy (lightbox) kép, az <img src> a bélyegkép.
-        - MOBILON a galéria vízszintesen csúsztatható (snap-pontokkal), DESKTOPON rács.
-        - Új képhez másolj le egy blokkot és növeld a sorszámot; törléshez töröld a blokkot.
-        - Az "alt" szöveg fontos: ez jelenik meg a lightbox alján, és segíti a Google képkeresot is.
+        - A képek a gyökérkönyvtárban vannak: rk_01.webp ... rk_13.webp
+        - Egy kép = egy <a class="gallery-item"> blokk. Az "href" a nagy
+          (lightbox) kép, az <img src> a bélyegkép.
+        - MOBILON vízszintesen csúsztatható sáv, md-től változó méretű rács.
+        - A csempe mérete a t-big / t-wide / t-tall osztállyal állítható
+          (jelenleg: 01 nagy, 05 és 11 magas, 08 és 13 széles).
+        - Az "alt" szöveg egyben a képaláírás és a lightbox felirata is.
     -->
-    <section class="py-14 md:py-20">
+    <section class="bg-remsei-dark pb-16 md:pb-24 pt-2 md:pt-6">
         <div class="max-w-6xl mx-auto md:px-4">
-            <!-- Mobilon vízszintesen csúsztatható sáv (snap) | md-tol rács -->
-            <div class="flex overflow-x-auto snap-x snap-mandatory scroll-pl-4 gap-3 px-4 pb-4 hide-scrollbar
-                        md:grid md:grid-cols-3 lg:grid-cols-4 md:gap-4 md:px-0 md:pb-0 md:scroll-pl-0 md:overflow-visible">
+            <div class="gallery-grid">
 
-                <!-- 1 -->
-                <a href="rk_01.webp" class="gallery-item group relative block shrink-0 w-[78%] sm:w-[46%] md:w-auto snap-start overflow-hidden rounded-xl bg-gray-200 aspect-[4/3] shadow-sm">
-                    <img src="rk_01.webp" alt="Kültéri egység telepítése" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    <span class="absolute inset-0 bg-remsei-dark/0 group-hover:bg-remsei-dark/30 transition-colors"></span>
-                    <span class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span class="bg-white/90 text-remsei-dark rounded-full w-11 h-11 flex items-center justify-center text-xl shadow">🔍</span>
+                <!-- 01 -->
+                <a href="rk_01.webp" class="gallery-item reveal t-big group" aria-label="Kültéri egység telepítése – nagyítás">
+                    <img src="rk_01.webp" alt="Kültéri egység telepítése" loading="lazy" decoding="async">
+
+                    <!-- Sorszám (galéria-hatás) -->
+                    <span class="tile-num">01</span>
+
+                    <!-- Alulról felúszó színátmenet + képaláírás -->
+                    <span class="tile-veil"></span>
+                    <span class="tile-caption">Kültéri egység telepítése</span>
+
+                    <!-- Állandó nagyítás-jelzés: érintőképernyőn nincs hover,
+                         ezért ez ott is látszik (halványan), hoverre kiemelkedik -->
+                    <span class="tile-zoom">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
                     </span>
                 </a>
 
-                <!-- 2 -->
-                <a href="rk_02.webp" class="gallery-item group relative block shrink-0 w-[78%] sm:w-[46%] md:w-auto snap-start overflow-hidden rounded-xl bg-gray-200 aspect-[4/3] shadow-sm">
-                    <img src="rk_02.webp" alt="Beltéri esztétikus rögzítése" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    <span class="absolute inset-0 bg-remsei-dark/0 group-hover:bg-remsei-dark/30 transition-colors"></span>
-                    <span class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span class="bg-white/90 text-remsei-dark rounded-full w-11 h-11 flex items-center justify-center text-xl shadow">🔍</span>
+                <!-- 02 -->
+                <a href="rk_02.webp" class="gallery-item reveal group" aria-label="Beltéri esztétikus rögzítése – nagyítás">
+                    <img src="rk_02.webp" alt="Beltéri esztétikus rögzítése" loading="lazy" decoding="async">
+
+                    <!-- Sorszám (galéria-hatás) -->
+                    <span class="tile-num">02</span>
+
+                    <!-- Alulról felúszó színátmenet + képaláírás -->
+                    <span class="tile-veil"></span>
+                    <span class="tile-caption">Beltéri esztétikus rögzítése</span>
+
+                    <!-- Állandó nagyítás-jelzés: érintőképernyőn nincs hover,
+                         ezért ez ott is látszik (halványan), hoverre kiemelkedik -->
+                    <span class="tile-zoom">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
                     </span>
                 </a>
 
-                <!-- 3 -->
-                <a href="rk_03.webp" class="gallery-item group relative block shrink-0 w-[78%] sm:w-[46%] md:w-auto snap-start overflow-hidden rounded-xl bg-gray-200 aspect-[4/3] shadow-sm">
-                    <img src="rk_03.webp" alt="Hőszivattyú kültéri egység telepítése" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    <span class="absolute inset-0 bg-remsei-dark/0 group-hover:bg-remsei-dark/30 transition-colors"></span>
-                    <span class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span class="bg-white/90 text-remsei-dark rounded-full w-11 h-11 flex items-center justify-center text-xl shadow">🔍</span>
+                <!-- 03 -->
+                <a href="rk_03.webp" class="gallery-item reveal group" aria-label="Hőszivattyú kültéri egység telepítése – nagyítás">
+                    <img src="rk_03.webp" alt="Hőszivattyú kültéri egység telepítése" loading="lazy" decoding="async">
+
+                    <!-- Sorszám (galéria-hatás) -->
+                    <span class="tile-num">03</span>
+
+                    <!-- Alulról felúszó színátmenet + képaláírás -->
+                    <span class="tile-veil"></span>
+                    <span class="tile-caption">Hőszivattyú kültéri egység telepítése</span>
+
+                    <!-- Állandó nagyítás-jelzés: érintőképernyőn nincs hover,
+                         ezért ez ott is látszik (halványan), hoverre kiemelkedik -->
+                    <span class="tile-zoom">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
                     </span>
                 </a>
 
-                <!-- 4 -->
-                <a href="rk_04.webp" class="gallery-item group relative block shrink-0 w-[78%] sm:w-[46%] md:w-auto snap-start overflow-hidden rounded-xl bg-gray-200 aspect-[4/3] shadow-sm">
-                    <img src="rk_04.webp" alt="Hőszivattyú kültéri egység telepítése" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    <span class="absolute inset-0 bg-remsei-dark/0 group-hover:bg-remsei-dark/30 transition-colors"></span>
-                    <span class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span class="bg-white/90 text-remsei-dark rounded-full w-11 h-11 flex items-center justify-center text-xl shadow">🔍</span>
+                <!-- 04 -->
+                <a href="rk_04.webp" class="gallery-item reveal group" aria-label="Hőszivattyú kültéri egység telepítése – nagyítás">
+                    <img src="rk_04.webp" alt="Hőszivattyú kültéri egység telepítése" loading="lazy" decoding="async">
+
+                    <!-- Sorszám (galéria-hatás) -->
+                    <span class="tile-num">04</span>
+
+                    <!-- Alulról felúszó színátmenet + képaláírás -->
+                    <span class="tile-veil"></span>
+                    <span class="tile-caption">Hőszivattyú kültéri egység telepítése</span>
+
+                    <!-- Állandó nagyítás-jelzés: érintőképernyőn nincs hover,
+                         ezért ez ott is látszik (halványan), hoverre kiemelkedik -->
+                    <span class="tile-zoom">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
                     </span>
                 </a>
 
-                <!-- 5 -->
-                <a href="rk_05.webp" class="gallery-item group relative block shrink-0 w-[78%] sm:w-[46%] md:w-auto snap-start overflow-hidden rounded-xl bg-gray-200 aspect-[4/3] shadow-sm">
-                    <img src="rk_05.webp" alt="Klíma telepítése panel házban" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    <span class="absolute inset-0 bg-remsei-dark/0 group-hover:bg-remsei-dark/30 transition-colors"></span>
-                    <span class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span class="bg-white/90 text-remsei-dark rounded-full w-11 h-11 flex items-center justify-center text-xl shadow">🔍</span>
+                <!-- 05 -->
+                <a href="rk_05.webp" class="gallery-item reveal t-tall group" aria-label="Klíma telepítése panel házban – nagyítás">
+                    <img src="rk_05.webp" alt="Klíma telepítése panel házban" loading="lazy" decoding="async">
+
+                    <!-- Sorszám (galéria-hatás) -->
+                    <span class="tile-num">05</span>
+
+                    <!-- Alulról felúszó színátmenet + képaláírás -->
+                    <span class="tile-veil"></span>
+                    <span class="tile-caption">Klíma telepítése panel házban</span>
+
+                    <!-- Állandó nagyítás-jelzés: érintőképernyőn nincs hover,
+                         ezért ez ott is látszik (halványan), hoverre kiemelkedik -->
+                    <span class="tile-zoom">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
                     </span>
                 </a>
 
-                <!-- 6 -->
-                <a href="rk_06.webp" class="gallery-item group relative block shrink-0 w-[78%] sm:w-[46%] md:w-auto snap-start overflow-hidden rounded-xl bg-gray-200 aspect-[4/3] shadow-sm">
-                    <img src="rk_06.webp" alt="Rejtett csővezetés, tiszta kábelezés" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    <span class="absolute inset-0 bg-remsei-dark/0 group-hover:bg-remsei-dark/30 transition-colors"></span>
-                    <span class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span class="bg-white/90 text-remsei-dark rounded-full w-11 h-11 flex items-center justify-center text-xl shadow">🔍</span>
+                <!-- 06 -->
+                <a href="rk_06.webp" class="gallery-item reveal group" aria-label="Rejtett csővezetés, tiszta kábelezés – nagyítás">
+                    <img src="rk_06.webp" alt="Rejtett csővezetés, tiszta kábelezés" loading="lazy" decoding="async">
+
+                    <!-- Sorszám (galéria-hatás) -->
+                    <span class="tile-num">06</span>
+
+                    <!-- Alulról felúszó színátmenet + képaláírás -->
+                    <span class="tile-veil"></span>
+                    <span class="tile-caption">Rejtett csővezetés, tiszta kábelezés</span>
+
+                    <!-- Állandó nagyítás-jelzés: érintőképernyőn nincs hover,
+                         ezért ez ott is látszik (halványan), hoverre kiemelkedik -->
+                    <span class="tile-zoom">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
                     </span>
                 </a>
 
-                <!-- 7 -->
-                <a href="rk_07.webp" class="gallery-item group relative block shrink-0 w-[78%] sm:w-[46%] md:w-auto snap-start overflow-hidden rounded-xl bg-gray-200 aspect-[4/3] shadow-sm">
-                    <img src="rk_07.webp" alt="Kültéri egység homlokzati elhelyezése" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    <span class="absolute inset-0 bg-remsei-dark/0 group-hover:bg-remsei-dark/30 transition-colors"></span>
-                    <span class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span class="bg-white/90 text-remsei-dark rounded-full w-11 h-11 flex items-center justify-center text-xl shadow">🔍</span>
+                <!-- 07 -->
+                <a href="rk_07.webp" class="gallery-item reveal group" aria-label="Kültéri egység homlokzati elhelyezése – nagyítás">
+                    <img src="rk_07.webp" alt="Kültéri egység homlokzati elhelyezése" loading="lazy" decoding="async">
+
+                    <!-- Sorszám (galéria-hatás) -->
+                    <span class="tile-num">07</span>
+
+                    <!-- Alulról felúszó színátmenet + képaláírás -->
+                    <span class="tile-veil"></span>
+                    <span class="tile-caption">Kültéri egység homlokzati elhelyezése</span>
+
+                    <!-- Állandó nagyítás-jelzés: érintőképernyőn nincs hover,
+                         ezért ez ott is látszik (halványan), hoverre kiemelkedik -->
+                    <span class="tile-zoom">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
                     </span>
                 </a>
 
-                <!-- 8 -->
-                <a href="rk_08.webp" class="gallery-item group relative block shrink-0 w-[78%] sm:w-[46%] md:w-auto snap-start overflow-hidden rounded-xl bg-gray-200 aspect-[4/3] shadow-sm">
-                    <img src="rk_08.webp" alt="Multi split klíma rendszer" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    <span class="absolute inset-0 bg-remsei-dark/0 group-hover:bg-remsei-dark/30 transition-colors"></span>
-                    <span class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span class="bg-white/90 text-remsei-dark rounded-full w-11 h-11 flex items-center justify-center text-xl shadow">🔍</span>
+                <!-- 08 -->
+                <a href="rk_08.webp" class="gallery-item reveal t-wide group" aria-label="Multi split klíma rendszer – nagyítás">
+                    <img src="rk_08.webp" alt="Multi split klíma rendszer" loading="lazy" decoding="async">
+
+                    <!-- Sorszám (galéria-hatás) -->
+                    <span class="tile-num">08</span>
+
+                    <!-- Alulról felúszó színátmenet + képaláírás -->
+                    <span class="tile-veil"></span>
+                    <span class="tile-caption">Multi split klíma rendszer</span>
+
+                    <!-- Állandó nagyítás-jelzés: érintőképernyőn nincs hover,
+                         ezért ez ott is látszik (halványan), hoverre kiemelkedik -->
+                    <span class="tile-zoom">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
                     </span>
                 </a>
 
-                <!-- 9 -->
-                <a href="rk_09.webp" class="gallery-item group relative block shrink-0 w-[78%] sm:w-[46%] md:w-auto snap-start overflow-hidden rounded-xl bg-gray-200 aspect-[4/3] shadow-sm">
-                    <img src="rk_09.webp" alt="Klíma beltéri egység" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    <span class="absolute inset-0 bg-remsei-dark/0 group-hover:bg-remsei-dark/30 transition-colors"></span>
-                    <span class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span class="bg-white/90 text-remsei-dark rounded-full w-11 h-11 flex items-center justify-center text-xl shadow">🔍</span>
+                <!-- 09 -->
+                <a href="rk_09.webp" class="gallery-item reveal group" aria-label="Klíma beltéri egység – nagyítás">
+                    <img src="rk_09.webp" alt="Klíma beltéri egység" loading="lazy" decoding="async">
+
+                    <!-- Sorszám (galéria-hatás) -->
+                    <span class="tile-num">09</span>
+
+                    <!-- Alulról felúszó színátmenet + képaláírás -->
+                    <span class="tile-veil"></span>
+                    <span class="tile-caption">Klíma beltéri egység</span>
+
+                    <!-- Állandó nagyítás-jelzés: érintőképernyőn nincs hover,
+                         ezért ez ott is látszik (halványan), hoverre kiemelkedik -->
+                    <span class="tile-zoom">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
                     </span>
                 </a>
 
                 <!-- 10 -->
-                <a href="rk_10.webp" class="gallery-item group relative block shrink-0 w-[78%] sm:w-[46%] md:w-auto snap-start overflow-hidden rounded-xl bg-gray-200 aspect-[4/3] shadow-sm">
-                    <img src="rk_10.webp" alt="Klíma beltéri egység konyhában" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    <span class="absolute inset-0 bg-remsei-dark/0 group-hover:bg-remsei-dark/30 transition-colors"></span>
-                    <span class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span class="bg-white/90 text-remsei-dark rounded-full w-11 h-11 flex items-center justify-center text-xl shadow">🔍</span>
+                <a href="rk_10.webp" class="gallery-item reveal group" aria-label="Klíma beltéri egység konyhában – nagyítás">
+                    <img src="rk_10.webp" alt="Klíma beltéri egység konyhában" loading="lazy" decoding="async">
+
+                    <!-- Sorszám (galéria-hatás) -->
+                    <span class="tile-num">10</span>
+
+                    <!-- Alulról felúszó színátmenet + képaláírás -->
+                    <span class="tile-veil"></span>
+                    <span class="tile-caption">Klíma beltéri egység konyhában</span>
+
+                    <!-- Állandó nagyítás-jelzés: érintőképernyőn nincs hover,
+                         ezért ez ott is látszik (halványan), hoverre kiemelkedik -->
+                    <span class="tile-zoom">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
                     </span>
                 </a>
 
                 <!-- 11 -->
-                <a href="rk_11.webp" class="gallery-item group relative block shrink-0 w-[78%] sm:w-[46%] md:w-auto snap-start overflow-hidden rounded-xl bg-gray-200 aspect-[4/3] shadow-sm">
-                    <img src="rk_11.webp" alt="Klíma beltéri egység" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    <span class="absolute inset-0 bg-remsei-dark/0 group-hover:bg-remsei-dark/30 transition-colors"></span>
-                    <span class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span class="bg-white/90 text-remsei-dark rounded-full w-11 h-11 flex items-center justify-center text-xl shadow">🔍</span>
+                <a href="rk_11.webp" class="gallery-item reveal t-tall group" aria-label="Klíma beltéri egység – nagyítás">
+                    <img src="rk_11.webp" alt="Klíma beltéri egység" loading="lazy" decoding="async">
+
+                    <!-- Sorszám (galéria-hatás) -->
+                    <span class="tile-num">11</span>
+
+                    <!-- Alulról felúszó színátmenet + képaláírás -->
+                    <span class="tile-veil"></span>
+                    <span class="tile-caption">Klíma beltéri egység</span>
+
+                    <!-- Állandó nagyítás-jelzés: érintőképernyőn nincs hover,
+                         ezért ez ott is látszik (halványan), hoverre kiemelkedik -->
+                    <span class="tile-zoom">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
                     </span>
                 </a>
 
                 <!-- 12 -->
-                <a href="rk_12.webp" class="gallery-item group relative block shrink-0 w-[78%] sm:w-[46%] md:w-auto snap-start overflow-hidden rounded-xl bg-gray-200 aspect-[4/3] shadow-sm">
-                    <img src="rk_12.webp" alt="Klíma telepítés tetőre" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    <span class="absolute inset-0 bg-remsei-dark/0 group-hover:bg-remsei-dark/30 transition-colors"></span>
-                    <span class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span class="bg-white/90 text-remsei-dark rounded-full w-11 h-11 flex items-center justify-center text-xl shadow">🔍</span>
+                <a href="rk_12.webp" class="gallery-item reveal group" aria-label="Klíma telepítés tetőre – nagyítás">
+                    <img src="rk_12.webp" alt="Klíma telepítés tetőre" loading="lazy" decoding="async">
+
+                    <!-- Sorszám (galéria-hatás) -->
+                    <span class="tile-num">12</span>
+
+                    <!-- Alulról felúszó színátmenet + képaláírás -->
+                    <span class="tile-veil"></span>
+                    <span class="tile-caption">Klíma telepítés tetőre</span>
+
+                    <!-- Állandó nagyítás-jelzés: érintőképernyőn nincs hover,
+                         ezért ez ott is látszik (halványan), hoverre kiemelkedik -->
+                    <span class="tile-zoom">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
                     </span>
                 </a>
 
                 <!-- 13 -->
-                <a href="rk_13.webp" class="gallery-item group relative block shrink-0 w-[78%] sm:w-[46%] md:w-auto snap-start overflow-hidden rounded-xl bg-gray-200 aspect-[4/3] shadow-sm">
-                    <img src="rk_13.webp" alt="Elkészült klíma telepítés" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    <span class="absolute inset-0 bg-remsei-dark/0 group-hover:bg-remsei-dark/30 transition-colors"></span>
-                    <span class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span class="bg-white/90 text-remsei-dark rounded-full w-11 h-11 flex items-center justify-center text-xl shadow">🔍</span>
+                <a href="rk_13.webp" class="gallery-item reveal t-wide group" aria-label="Elkészült klíma telepítés – nagyítás">
+                    <img src="rk_13.webp" alt="Elkészült klíma telepítés" loading="lazy" decoding="async">
+
+                    <!-- Sorszám (galéria-hatás) -->
+                    <span class="tile-num">13</span>
+
+                    <!-- Alulról felúszó színátmenet + képaláírás -->
+                    <span class="tile-veil"></span>
+                    <span class="tile-caption">Elkészült klíma telepítés</span>
+
+                    <!-- Állandó nagyítás-jelzés: érintőképernyőn nincs hover,
+                         ezért ez ott is látszik (halványan), hoverre kiemelkedik -->
+                    <span class="tile-zoom">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                        </svg>
                     </span>
                 </a>
 
@@ -294,16 +610,12 @@
     <!-- ========================================================= -->
     <div id="lightbox" class="hidden fixed inset-0 z-[60] bg-black/90 backdrop-blur-sm items-center justify-center p-4 select-none">
 
-        <!-- Bezárás -->
         <button id="lbClose" aria-label="Bezárás" class="absolute top-4 right-4 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-full w-11 h-11 flex items-center justify-center text-2xl transition z-10">&times;</button>
 
-        <!-- Előző -->
         <button id="lbPrev" aria-label="Előző kép" class="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-full w-11 h-11 md:w-12 md:h-12 flex items-center justify-center text-3xl leading-none pb-1 transition z-10">&lsaquo;</button>
 
-        <!-- Következő -->
         <button id="lbNext" aria-label="Következő kép" class="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-full w-11 h-11 md:w-12 md:h-12 flex items-center justify-center text-3xl leading-none pb-1 transition z-10">&rsaquo;</button>
 
-        <!-- Kép + felirat -->
         <figure class="flex flex-col items-center gap-3 max-w-[92vw]">
             <img id="lightboxImg" src="" alt="" class="max-w-[92vw] max-h-[80vh] object-contain rounded-lg shadow-2xl">
             <figcaption class="text-center px-10">
@@ -320,7 +632,6 @@
     <footer class="bg-gray-900 text-gray-400 pt-16 pb-8 px-4 border-t-4 border-remsei-blue">
         <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 mb-12">
 
-            <!-- 1. Oszlop: Rólunk & Céginfo -->
             <div class="flex flex-col items-center md:items-start text-center md:text-left">
                 <a href="index.html" class="inline-block mb-4">
                     <img src="remsei-logo.png" alt="Remsei Klíma Logó" class="h-10 object-contain grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all">
@@ -335,7 +646,6 @@
                 </div>
             </div>
 
-            <!-- 2. Oszlop: Gyorslinkek -->
             <div class="flex flex-col items-center md:items-start">
                 <h4 class="text-white text-lg font-bold uppercase tracking-wider mb-5">Navigáció</h4>
                 <ul class="grid grid-cols-2 md:grid-cols-1 gap-x-6 gap-y-3 text-sm">
@@ -347,7 +657,6 @@
                 </ul>
             </div>
 
-            <!-- 3. Oszlop: Kapcsolat -->
             <div class="flex flex-col items-center md:items-start text-center md:text-left">
                 <h4 class="text-white text-lg font-bold uppercase tracking-wider mb-5">Kapcsolat</h4>
                 <ul class="space-y-4 text-sm w-full">
@@ -393,6 +702,37 @@
 
     <!-- A meglévő navigációs / hamburger script -->
     <script src="app.js"></script>
+
+    <!-- ========================================================= -->
+    <!--            MEGJELENÉS GÖRGETÉSRE (reveal)                 -->
+    <!-- ========================================================= -->
+    <script>
+    (function () {
+        const items = document.querySelectorAll('.reveal');
+        if (!items.length) return;
+
+        // Ha nincs IntersectionObserver, vagy az animációk ki vannak kapcsolva,
+        // egyszerűen minden azonnal látszik.
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduced || !('IntersectionObserver' in window)) {
+            items.forEach(function (el) { el.classList.add('is-visible'); });
+            return;
+        }
+
+        const io = new IntersectionObserver(function (entries) {
+            let shown = 0;
+            entries.forEach(function (entry) {
+                if (!entry.isIntersecting) return;
+                // Lépcsőzetes késleltetés az egyszerre belépő csempéknek
+                entry.target.style.transitionDelay = (shown++ * 70) + 'ms';
+                entry.target.classList.add('is-visible');
+                io.unobserve(entry.target);
+            });
+        }, { rootMargin: '0px 0px -10% 0px', threshold: 0.12 });
+
+        items.forEach(function (el) { io.observe(el); });
+    })();
+    </script>
 
     <!-- ========================================================= -->
     <!--                   GALÉRIA + LIGHTBOX SCRIPT               -->
@@ -481,3 +821,4 @@
 
 </body>
 </html>
+
