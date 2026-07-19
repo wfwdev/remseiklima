@@ -85,6 +85,30 @@
             .hero-btn { padding-top: 0.65rem; padding-bottom: 0.65rem; font-size: 1rem; }
         }
 
+        /* =========================================================
+           MOBIL MENÜ
+           A tartalom a NAVBAR ALATT kezdődik (padding-top), így az első
+           menüpontot nem takarja el a fejléc.
+           overflow-y-auto: fekvő telefonon a tartalom ~490px, a kijelző
+           viszont csak ~390px magas – görgetni kell tudni.
+           A belső doboz min-h-full + justify-center: ha van hely, középre
+           igazít; ha nincs, felülről indul és görgethető. */
+        #mobileMenu .menu-inner {
+            padding-top: calc(var(--nav-h) + 1.5rem);
+        }
+        /* A menüpontok mérete a képernyő magasságához igazodik */
+        #mobileMenu .mobile-link {
+            font-size: 1.5rem;
+        }
+        @media (min-height: 720px) {
+            #mobileMenu .mobile-link { font-size: 1.75rem; }
+        }
+        @media (max-height: 520px) {
+            #mobileMenu .mobile-link { font-size: 1.125rem; }
+            #mobileMenu .menu-inner  { padding-top: calc(var(--nav-h) + 0.75rem); }
+            #mobileMenu .menu-row    { padding-top: 0.6rem; padding-bottom: 0.6rem; }
+        }
+
         /* HERO belépő animációk (JS nélkül, betöltéskor futnak) */
         .hero-text {
             opacity: 0;
@@ -184,20 +208,42 @@
     <!-- ========================================================= -->
     <!--                 MOBILOS MENÜ OVERLAY                      -->
     <!-- ========================================================= -->
-    <div id="mobileMenu" class="fixed inset-0 bg-white z-40 flex flex-col items-center justify-center space-y-8 transform -translate-y-full opacity-0 pointer-events-none transition-all duration-300">
-        <a href="termekek.html" class="mobile-link text-remsei-dark font-black text-3xl hover:text-remsei-blue transition">Készülékek</a>
-        <a href="referenciak.html" class="mobile-link text-remsei-dark font-black text-3xl hover:text-remsei-blue transition">Referenciák</a>
-        <a href="index.html#szolgaltatasok" class="mobile-link text-remsei-dark font-black text-3xl hover:text-remsei-blue transition">Szolgáltatások</a>
-        <a href="index.html#kapcsolat" class="mobile-link text-remsei-dark font-black text-3xl hover:text-remsei-blue transition">Kapcsolat</a>
-        <a href="tel:+36706118131" class="bg-remsei-blue text-white text-center py-4 px-10 rounded-full font-bold mt-8 shadow-xl text-xl hover:bg-blue-700 transition">
-            📞 Hívás Most
-        </a>
-        <a href="https://www.facebook.com/profile.php?id=61591746097631" target="_blank" class="flex items-center justify-center gap-2 text-remsei-dark font-bold hover:text-[#1877F2] transition mt-4">
-            <svg class="w-6 h-6 text-[#1877F2]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
-            </svg>
-            Facebook oldalunk
-        </a>
+    <div id="mobileMenu" class="fixed inset-0 bg-white z-40 overflow-y-auto overscroll-contain transform -translate-y-full opacity-0 pointer-events-none transition-all duration-300">
+
+        <div class="menu-inner min-h-full flex flex-col justify-center max-w-sm mx-auto px-6 pb-8">
+
+            <!-- Menüpontok: teljes szélességű, jól nyomható sorok -->
+            <a href="termekek.html" class="mobile-link menu-row group flex items-center justify-between py-4 border-b border-gray-100 font-bold text-remsei-dark hover:text-remsei-blue transition">
+                <span>Készülékek</span>
+                <span class="text-remsei-blue text-xl opacity-40 group-hover:opacity-100 transition-all group-hover:translate-x-1">&rarr;</span>
+            </a>
+            <a href="referenciak.html" class="mobile-link menu-row group flex items-center justify-between py-4 border-b border-gray-100 font-bold text-remsei-dark hover:text-remsei-blue transition">
+                <span>Referenciák</span>
+                <span class="text-remsei-blue text-xl opacity-40 group-hover:opacity-100 transition-all group-hover:translate-x-1">&rarr;</span>
+            </a>
+            <a href="index.html#szolgaltatasok" class="mobile-link menu-row group flex items-center justify-between py-4 border-b border-gray-100 font-bold text-remsei-dark hover:text-remsei-blue transition">
+                <span>Szolgáltatások</span>
+                <span class="text-remsei-blue text-xl opacity-40 group-hover:opacity-100 transition-all group-hover:translate-x-1">&rarr;</span>
+            </a>
+            <a href="index.html#kapcsolat" class="mobile-link menu-row group flex items-center justify-between py-4 border-b border-gray-100 font-bold text-remsei-dark hover:text-remsei-blue transition">
+                <span>Kapcsolat</span>
+                <span class="text-remsei-blue text-xl opacity-40 group-hover:opacity-100 transition-all group-hover:translate-x-1">&rarr;</span>
+            </a>
+
+            <!-- Fő CTA: telefonhívás -->
+            <a href="tel:+36706118131" class="flex items-center justify-center gap-2 bg-remsei-blue text-white text-center py-4 px-6 rounded-xl font-bold mt-8 shadow-lg text-lg hover:bg-blue-700 transition">
+                📞 +36 70 611 8131
+            </a>
+
+            <!-- Facebook -->
+            <a href="https://www.facebook.com/profile.php?id=61591746097631" target="_blank" class="flex items-center justify-center gap-2 text-gray-500 text-sm font-semibold hover:text-[#1877F2] transition mt-5">
+                <svg class="w-5 h-5 text-[#1877F2]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+                </svg>
+                Facebook oldalunk
+            </a>
+
+        </div>
     </div>
 
 
@@ -558,3 +604,4 @@
     <script src="app.js"></script>
 </body>
 </html>
+
